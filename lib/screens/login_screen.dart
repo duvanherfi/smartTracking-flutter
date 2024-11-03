@@ -127,63 +127,82 @@ class _LoginScreenState extends State<LoginScreen> {
                           ]),
                         ),
                         const SizedBox(height: 15),
-                      FormBuilderCheckbox(
-                      name: 'accept_terms',
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      side: const BorderSide(
-                        width: 1,
-                        color: Colors.white,
-                        strokeAlign: 1,
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                      title: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
-                            children: [
-                              TextSpan(
-                                  text: 'Acepto los términos y condiciones',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: ' presiona aquí para verlos',
+                        FormBuilderCheckbox(
+                          name: 'accept_terms',
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          side: const BorderSide(
+                            width: 1,
+                            color: Colors.white,
+                            strokeAlign: 1,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          title: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                                children: [
+                                  TextSpan(
+                                      text: 'Acepto los términos y condiciones',
                                       style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.grey,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                        print('launch url');
-                                      },
-                                    ),
-                                  ]
-                              ),
-                            ],
-                          )
-                      ),
-                      checkColor: Color(0xFF6C18DB),
-                      activeColor: Colors.white,
-                      visualDensity: VisualDensity.compact,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                          borderSide: BorderSide(color: Colors.white),
+                                      children: [
+                                        TextSpan(
+                                          text: ' presiona aquí para verlos',
+                                          style: const TextStyle(
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: Colors.grey,
+                                          ),
+                                          recognizer: TapGestureRecognizer()..onTap = () {
+                                            print('launch url');
+                                          },
+                                        ),
+                                      ]
+                                  ),
+                                ],
+                              )
+                          ),
+                          checkColor: Color(0xFF6C18DB),
+                          activeColor: Colors.white,
+                          visualDensity: VisualDensity.compact,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(40)),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            isCollapsed: true,
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                              errorText: 'Debes aceptar los términos y condiciones',
+                            ),
+                          ]),
                         ),
-                        isCollapsed: true,
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          errorText: 'Debes aceptar los términos y condiciones',
+                        const SizedBox(height: 15),
+                        MaterialButton(
+                          color: const Color(0xFF6C18DB),
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          height: 50,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            // Validate and save the form values
+                            _formKey.currentState?.saveAndValidate();
+                            debugPrint(_formKey.currentState?.value.toString());
+
+                            // On another side, can access all field values without saving form with instantValues
+                            _formKey.currentState?.validate();
+                            debugPrint(_formKey.currentState?.instantValue.toString());
+                          },
+                          child: const Text('Iniciar sesión'),
                         ),
-                      ]),
-                    ),
-                    const SizedBox(height: 15),
                     ],
                     ),
                   ),
