@@ -122,6 +122,40 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
                             // On another side, can access all field values without saving form with instantValues
                             _formKey.currentState?.validate();
                             debugPrint(_formKey.currentState?.instantValue.toString());
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    textAlign: TextAlign.center,
+                                    'Contraseña recordada',
+                                    style: TextStyle(
+                                      color: Color(0xFF6C18DB),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                  content: const Text(
+                                    textAlign: TextAlign.justify,
+                                    'Tu contraseña ha sido enviada a tu número de teléfono vía SMS y a tu correo electrónico.',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Aceptar'),
+                                      onPressed: () {
+                                        // Lógica para aceptar
+                                        Navigator.of(context).pop(); // Cierra el diálogo
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           child: const Text('Recordar contraseña'),
                         ),
