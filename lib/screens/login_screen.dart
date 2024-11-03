@@ -203,6 +203,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: const Text('Iniciar sesión'),
                         ),
+                        SizedBox(height: 10),
+                        MaterialButton(
+                          textColor: Colors.white,
+                          height: 30,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/remember_password');
+                          },
+                          child: const Text(
+                              '¿Olvidaste tu contraseña?',
+                              style: TextStyle(
+                                fontSize: 16,
+                              )
+                          ),
+
+                        ),
                     ],
                     ),
                   ),
