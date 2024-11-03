@@ -104,8 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            FormBuilderValidators.email(),
+                            FormBuilderValidators.required(
+                              errorText: 'El campo no debe estar vacío',
+                            ),
+                            FormBuilderValidators.numeric(
+                              errorText: 'El número de teléfono debe ser numérico',
+                            ),
                           ]),
                         ),
                         const SizedBox(height: 15),
@@ -131,7 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           obscureText: true,
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
+                            FormBuilderValidators.required(
+                              errorText: 'El campo no debe estar vacío',
+                            ),
                           ]),
                         ),
                         const SizedBox(height: 15),
