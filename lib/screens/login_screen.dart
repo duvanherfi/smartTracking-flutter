@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -8,6 +11,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
+  final _numberKey = GlobalKey<FormBuilderFieldState>();
 
   void _login() {
     final email = _emailController.text;
@@ -53,10 +58,79 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
               ),
               const Positioned(
-                top: 90,
-                child: Image(
-                  image: AssetImage('assets/images/icon.png'),
-                )
+                  top: 90,
+                  child: Image(
+                    image: AssetImage('assets/images/icon.png'),
+                  )
+              ),
+              Container(
+                alignment: Alignment.center,
+                color: Colors.transparent,
+                margin: const EdgeInsets.only(top: 390),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Center(
+                  child: FormBuilder(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        FormBuilderTextField(
+                          key: _numberKey,
+                          keyboardType: TextInputType.number,
+                          name: 'phone',
+                          style: const TextStyle(
+                              color: Colors.black,
+                              height: 1
+                          ),
+                          decoration: InputDecoration(
+                            labelText: 'Número',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(
+                              Icons.numbers,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.email(),
+                          ]),
+                        ),
+                        const SizedBox(height: 15),
+                        FormBuilderTextField(
+                          name: 'password',
+                          style: const TextStyle(
+                              color: Colors.black,
+                              height: 1
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Constraseña',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderSide: BorderSide.none,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          obscureText: true,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
