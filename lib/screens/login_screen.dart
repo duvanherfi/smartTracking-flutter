@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -27,6 +28,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Uri terms = Uri.parse('https://www.google.com.co');
+
+    Future<void> _launchUrl() async {
+      if (!await launchUrl(terms)) {
+        throw Exception('Could not launch $terms');
+      }
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -159,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             decorationColor: Colors.grey,
                                           ),
                                           recognizer: TapGestureRecognizer()..onTap = () {
-                                            print('launch url');
+                                            _launchUrl();
                                           },
                                         ),
                                       ]
