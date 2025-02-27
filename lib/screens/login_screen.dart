@@ -4,27 +4,17 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../routes.dart';
+import '../utils/app_component.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
   final _numberKey = GlobalKey<FormBuilderFieldState>();
-
-  void _login() {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    // Aquí puedes agregar la lógica para autenticar al usuario
-    print('Email: $email');
-    print('Password: $password');
-    // Navegar a la pantalla principal después del login exitoso
-    Navigator.pushReplacementNamed(context, '/home');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,16 +79,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.black,
                               height: 1
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Número',
                             floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: const OutlineInputBorder(
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(30)),
                               borderSide: BorderSide.none,
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.numbers,
                               color: Colors.grey,
                             ),
@@ -208,21 +198,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           minWidth: double.infinity,
                           onPressed: () {
                             // Validate and save the form values
-                            _formKey.currentState?.saveAndValidate();
-                            debugPrint(_formKey.currentState?.value.toString());
+                            // _formKey.currentState?.saveAndValidate();
+                            // debugPrint(_formKey.currentState?.value.toString());
 
                             // On another side, can access all field values without saving form with instantValues
-                            _formKey.currentState?.validate();
-                            debugPrint(_formKey.currentState?.instantValue.toString());
+                            if (_formKey.currentState!.validate()) {
+                              appNavigator.pushReplacement(Routes.home);
+                            }
+                            // debugPrint(_formKey.currentState?.instantValue.toString());
                           },
                           child: const Text('Iniciar sesión'),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         MaterialButton(
                           textColor: Colors.white,
                           height: 30,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/remember_password');
+                            appNavigator.push(Routes.rememberPassword);
                           },
                           child: const Text(
                               '¿Olvidaste tu contraseña?',

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
+import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/utils/app_component.dart';
+
 class RemeberPasswordScreen extends StatefulWidget {
   @override
   _RemeberPasswordScreenState createState() => _RemeberPasswordScreenState();
@@ -116,46 +119,47 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
                           minWidth: double.infinity,
                           onPressed: () {
                             // Validate and save the form values
-                            _formKey.currentState?.saveAndValidate();
-                            debugPrint(_formKey.currentState?.value.toString());
+                           // _formKey.currentState?.saveAndValidate();
+                            // debugPrint(_formKey.currentState?.value.toString());
 
                             // On another side, can access all field values without saving form with instantValues
-                            _formKey.currentState?.validate();
-                            debugPrint(_formKey.currentState?.instantValue.toString());
-                            Navigator.pop(context);
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text(
-                                    textAlign: TextAlign.center,
-                                    'Contraseña recordada',
-                                    style: TextStyle(
-                                      color: Color(0xFF6C18DB),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
+                            if (_formKey.currentState!.validate()) {
+                              debugPrint(_formKey.currentState?.instantValue.toString());
+                              appNavigator.clearStackAndShow(Routes.login);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      textAlign: TextAlign.center,
+                                      'Contraseña recordada',
+                                      style: TextStyle(
+                                        color: Color(0xFF6C18DB),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30,
+                                      ),
                                     ),
-                                  ),
-                                  content: const Text(
-                                    textAlign: TextAlign.justify,
-                                    'Tu contraseña ha sido enviada a tu número de teléfono vía SMS y a tu correo electrónico.',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
+                                    content: const Text(
+                                      textAlign: TextAlign.justify,
+                                      'Tu contraseña ha sido enviada a tu número de teléfono vía SMS y a tu correo electrónico.',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Aceptar'),
-                                      onPressed: () {
-                                        // Lógica para aceptar
-                                        Navigator.of(context).pop(); // Cierra el diálogo
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Aceptar'),
+                                        onPressed: () {
+                                          // Lógica para aceptar
+                                          Navigator.of(context).pop(); // Cierra el diálogo
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: const Text('Recordar contraseña'),
                         ),
