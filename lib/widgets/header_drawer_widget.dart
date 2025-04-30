@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HeaderDrawerWidget extends StatefulWidget {
-  final Function() onTap;
   final bool isRooted;
   final bool isRealDevice;
 
   const HeaderDrawerWidget(
-    this.onTap,
     this.isRooted,
     this.isRealDevice, {
     super.key,
@@ -24,21 +22,19 @@ class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
   }
 
   Widget avatar() =>
-      GestureDetector(
-        onTap: widget.onTap,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            CircleAvatar(
-              radius: 70,
+      Stack(
+        clipBehavior: Clip.none,
+        children: [
+          CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 50,
               child: Image.asset(
-                'assets/images/logo.png',
+                'assets/images/user.png',
                 width: 70,
                 height: 70,
-              ),
-            ),
-          ],
-        ),
+              )
+          ),
+        ],
       );
 
   Widget name() {
@@ -78,6 +74,7 @@ class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        name(),
                         name()
                       ],
                     ),

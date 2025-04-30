@@ -4,6 +4,9 @@ class SharedPreferencesV2 {
   late SharedPreferences _prefs;
   final String _sessionToken = "token";
   static const String _baseUrl = "base_url";
+  static const String _vehicleId = "vehicle_id";
+  static const String _userName = "user_name";
+  static const String _email = "email";
 
   static const String _baseUrlRoutes = "base_url_routes";
   final String _appTheme = 'app_theme';
@@ -27,6 +30,51 @@ class SharedPreferencesV2 {
 
   Future<bool> removeToken() async {
     return _prefs.remove(_sessionToken);
+  }
+
+  Future<String?> getVehicleId() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString(_vehicleId)?.isEmpty == true
+        ? null
+        : _prefs.getString(_vehicleId);
+  }
+
+  Future<bool> setVehicleId(String? id) async {
+    return _prefs.setString(_vehicleId, id ?? '');
+  }
+
+  Future<bool> removeVehicleId() async {
+    return _prefs.remove(_vehicleId);
+  }
+
+  Future<String?> getUserName() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString(_userName)?.isEmpty == true
+        ? null
+        : _prefs.getString(_userName);
+  }
+
+  Future<bool> setUserName(String? name) async {
+    return _prefs.setString(_userName, name ?? '');
+  }
+
+  Future<bool> removeUserName() async {
+    return _prefs.remove(_userName);
+  }
+
+  Future<String?> getEmail() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString(_email)?.isEmpty == true
+        ? null
+        : _prefs.getString(_email);
+  }
+
+  Future<bool> setEmail(String? email) async {
+    return _prefs.setString(_email, email ?? '');
+  }
+
+  Future<bool> removeEmail() async {
+    return _prefs.remove(_email);
   }
 
   static Future<bool> setApiBaseUrl(String baseUrl) async {

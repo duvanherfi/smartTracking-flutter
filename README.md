@@ -20,3 +20,7 @@ samples, guidance on mobile development, and a full API reference.
 ```
 fvm flutter clean && fvm flutter pub get && fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+```
+fvm flutter pub run build_runner build --delete-conflicting-outputs
+```

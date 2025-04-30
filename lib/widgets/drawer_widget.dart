@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:smart_tracking/utils/widget.extension.dart';
+import 'package:smart_tracking/utils/extensions/widget.extension.dart';
 import 'package:smart_tracking/widgets/header_drawer_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import 'package:smart_tracking/utils/app_component.dart';
+
+import 'package:smart_tracking/routes.dart';
 
 class DrawerWidget extends StatefulWidget {
   final Function(String) onTap;
@@ -55,7 +59,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       _builderItemDrawer(
           "Politicas de seguridad",
           const Icon(Icons.receipt_long, color: Color(0xFF6C18DB), size: 50),
-          'alerts'
+          'politics'
       ),
     );
     drawerItem.add(
@@ -77,7 +81,10 @@ class DrawerWidgetState extends State<DrawerWidget> {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(const Color(0xFF6C18DB)),
           ),
-          onPressed: () => widget.onTap('logout'),
+          onPressed: () async {
+            await sharedPreferencesV2.clearData();
+            appNavigator.pushReplacement(Routes.login);
+          },
           child: const Text(
             'Cerrar sesión',
             style: TextStyle(
@@ -156,7 +163,6 @@ class DrawerWidgetState extends State<DrawerWidget> {
                 controller: scrollController,
                 children: [
                   HeaderDrawerWidget(
-                    () => widget.onTap('profile'),
                     isRooted,
                     isRealDevice,
                   ),
