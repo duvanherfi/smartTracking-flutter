@@ -18,7 +18,7 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
   @override
   Widget build(
       BuildContext context, BaseScreenViewModel viewModel) {
-    viewModel.selectedButton = viewModel.notificationsButton;
+    viewModel.selectedButton = viewModel.notificationsButton!;
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -26,7 +26,7 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
         Row(
           children: [
             BubbleTag(
-              text: viewModel.vehicle?.labelDirection?.toString(),
+              text: viewModel.vehicle?.labelDirection?.toString() ?? "Cargando...",
             ),
             const SizedBox(width: 90),
             Stack(
@@ -122,7 +122,7 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
                             pointers: <GaugePointer>[
                               RangePointer(
                                 width: 20,
-                                value: double.tryParse(viewModel.vehicle?.maxSpeed.toString() ?? "0.0") as double,
+                                value: double.tryParse(viewModel.vehicle?.maxSpeed?.toString() ?? "0") as double,
                                 cornerStyle: CornerStyle.bothCurve,
                                 enableAnimation: true,
                                 color: const Color(0xFF6C18DB),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:smart_tracking/api/model/vehicle.dart';
+import 'package:smart_tracking/geofences/view_model/geofences_view_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:smart_tracking/base/view_model/base_view_model.dart';
 import 'package:smart_tracking/utils/app_component.dart';
@@ -8,13 +10,15 @@ import 'package:smart_tracking/utils/extensions/dialog.extension.dart';
 import 'button_icon.dart';
 
 
-class AddGeofenceScreen extends ViewModelWidget<BaseScreenViewModel> {
+class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
 
   const AddGeofenceScreen({super.key});
 
   @override
-  Widget build(BuildContext context, BaseScreenViewModel viewModel) {
+  Widget builder(BuildContext context, GeoFencesViewModel viewModel, Widget? child) {
     final size = MediaQuery.of(context).size;
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    viewModel.vehicle = args["vehicle"] as Vehicle;
 
     return Scaffold(
       body: Column(
@@ -24,18 +28,26 @@ class AddGeofenceScreen extends ViewModelWidget<BaseScreenViewModel> {
             padding: const EdgeInsets.only(top: 50, left: 16, right: 16, bottom: 12),
             color: Colors.lightBlue.shade300,
             width: double.infinity,
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.arrow_back, color: Colors.white),
-                SizedBox(width: 12),
-                Text("Datos de la geocerca", style: TextStyle(color: Colors.white, fontSize: 18)),
+                IconButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateColor.resolveWith((states) => Colors.white)
+                  ),
+                    onPressed: () => appNavigator.back(),
+                    icon: const Icon(
+                      Icons.arrow_back, color: Color(0xFF6c18db), size: 30
+                    )
+                ),
+                const SizedBox(width: 12),
+                const Text("Datos de la geocerca", style: TextStyle(color: Colors.white, fontSize: 18)),
               ],
             ),
           ),
 
           // Mapa
           SizedBox(
-            height: size.height * 0.5,
+            height: size.height * 0.65,
             child: FlutterMap(
               options: MapOptions(
                 initialCenter: viewModel.getVehicleCoordinates(),
@@ -58,63 +70,39 @@ class AddGeofenceScreen extends ViewModelWidget<BaseScreenViewModel> {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                   subdomains: const ['a', 'b', 'c'],
                 ),
-                if (viewModel.mode == GeofenceMode.circle)
-                  CircleLayer(
-                    circles: [
-                      CircleMarker(
-                        point: viewModel.centerCircle,
-                        color: Colors.red.withValues(alpha: 0.3),
-                        borderStrokeWidth: 2,
-                        borderColor: Colors.red,
-                        useRadiusInMeter: true,
-                        radius: viewModel.geofenceRadius,
-                      )
-                    ],
-                  ),
-                if (viewModel.mode == GeofenceMode.free &&
-                    viewModel.freePolygon.isNotEmpty)
-                  PolygonLayer(
-                    polygons: [
-                      Polygon(
-                        points: viewModel.freePolygon,
-                        color: Colors.red.withValues(alpha: 0.3),
-                        borderColor: Colors.red,
-                        borderStrokeWidth: 2,
-                      ),
-                    ],
-                  ),
+                viewModel.getMarkerShape(),
+                viewModel.getMarkers(),
               ],
             ),
           ),
 
           // Botón Continuar
-          Padding(
+          viewModel.canContinue() ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue.shade300,
+                backgroundColor: Color(0xFF18BEDB),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
               onPressed: () {
-                // Acción al presionar continuar
+                debugPrint("continuar: ${viewModel.getMarkerShape()}");
               },
               child: const Text("Continuar", style: TextStyle(color: Colors.white)),
             ),
-          ),
-
-          // Slider de tamaño
+          ) : const SizedBox(),
+          if (viewModel.mode == GeofenceMode.circle)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
               children: [
                 Slider(
                   value: viewModel.geofenceRadius,
-                  min: 100,
-                  max: 1000,
+                  min: 1000,
+                  max: 7000,
                   onChanged: viewModel.setGeofenceRadius,
                 ),
                 const Text("Tamaño"),
@@ -131,16 +119,16 @@ class AddGeofenceScreen extends ViewModelWidget<BaseScreenViewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BottomIcon(
+                viewModel.mode == null  || viewModel.mode == GeofenceMode.free ? BottomIcon(
                   icon: Icons.add_circle,
                   label: "Circulo",
                   onTap: () => viewModel.changeModeGeofence(GeofenceMode.circle),
-                ),
-                BottomIcon(
+                ) : const SizedBox(),
+                viewModel.mode == null  || viewModel.mode == GeofenceMode.circle ? BottomIcon(
                   icon: Icons.edit,
                   label: "Dibujo libre",
                   onTap: () => viewModel.changeModeGeofence(GeofenceMode.free),
-                ),
+                ) : const SizedBox(),
                 BottomIcon(
                   icon: Icons.recommend,
                   label: "Recomendado",
@@ -157,5 +145,10 @@ class AddGeofenceScreen extends ViewModelWidget<BaseScreenViewModel> {
         ],
       ),
     );
+  }
+
+  @override
+  GeoFencesViewModel viewModelBuilder(BuildContext context) {
+    return GeoFencesViewModel(context);
   }
 }

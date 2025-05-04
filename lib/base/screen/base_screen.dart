@@ -205,7 +205,7 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                                         .map((Vehicle vehicle) {
                                       return DropdownMenuItem<String>(
                                         value: vehicle.id,
-                                        child: Text(vehicle.plates.toString()),
+                                        child: Text(vehicle.plates?.toString() ?? ""),
                                       );
                                     }).toList(),
                                     onChanged: viewModel.onVehicleTap,

@@ -34,24 +34,8 @@ class BaseScreenViewModel extends AppBaseViewModel {
   List<GeoFence> geoFences = [];
   AppLifecycleListener? _listener;
   bool get loading => viewModelLoading;
-  IconButton notificationsButton = IconButton(
-    icon: const Badge(
-    padding: EdgeInsets.all(0),
-    label: Text('3'),
-    child: Icon(Icons.notifications,
-    color: Colors.white, size: 45)),
-    onPressed: () {
-      showPiDialog("Disponible pronto");
-    }
-  );
-  IconButton addGeoFenceButton = IconButton(
-    icon: const Icon(
-        Icons.add,
-        color: Colors.white, size: 45
-    ), onPressed: () {
-      appNavigator.push(Routes.addGeoFence);
-    },
-  );
+  IconButton? notificationsButton;
+  IconButton? addGeoFenceButton;
   bool addGeoFence = false;
   GeofenceMode? mode;
   double geofenceRadius = 300;
@@ -63,7 +47,29 @@ class BaseScreenViewModel extends AppBaseViewModel {
   BaseScreenViewModel(BuildContext context) {
     appLifeCycle();
     _init(context);
-    selectedButton = notificationsButton;
+    notificationsButton = IconButton(
+        icon: const Badge(
+            padding: EdgeInsets.all(0),
+            label: Text('3'),
+            child: Icon(Icons.notifications,
+                color: Colors.white, size: 45)),
+        onPressed: () {
+          showPiDialog("Disponible pronto");
+        }
+    );
+    addGeoFenceButton = IconButton(
+      icon: const Icon(
+          Icons.add,
+          color: Colors.white, size: 45
+      ), onPressed: () {
+        appNavigator.push(Routes.addGeoFence, arguments: {
+          'vehicle': vehicle,
+        });
+      },
+    );
+    selectedButton = notificationsButton!;
+
+
   }
 
   void appLifeCycle() {
@@ -218,12 +224,12 @@ class BaseScreenViewModel extends AppBaseViewModel {
       case 1:
         currentIndex = id;
         getGeoFences();
-        selectedButton = addGeoFenceButton;
+        selectedButton = addGeoFenceButton!;
         notifyListeners();
         break;
       case 2:
         currentIndex = id;
-        selectedButton = notificationsButton;
+        selectedButton = notificationsButton!;
         notifyListeners();
         break;
       case 3:
