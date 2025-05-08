@@ -5,8 +5,14 @@ part 'geo_fence_datasource.chopper.dart';
 
 @ChopperApi(baseUrl: "/geo_fences")
 abstract class GeoFenceDataSource extends ChopperService {
+
   @GET()
   Future<Response<List<GeoFence>>> getGeoFences();
+
+  @POST()
+  Future<Response<GeoFence>> createGeoFence(
+    @Body()  Map<String, GeoFence> body,
+  );
 
   static _$GeoFenceDataSource create([ChopperClient? client]) =>
       _$GeoFenceDataSource(client);

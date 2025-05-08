@@ -28,4 +28,17 @@ final class _$GeoFenceDataSource extends GeoFenceDataSource {
     );
     return client.send<List<GeoFence>, GeoFence>($request);
   }
+
+  @override
+  Future<Response<GeoFence>> createGeoFence(Map<String, GeoFence> body) {
+    final Uri $url = Uri.parse('/geo_fences');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<GeoFence, GeoFence>($request);
+  }
 }

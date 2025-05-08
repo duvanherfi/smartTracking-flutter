@@ -19,10 +19,10 @@ import 'package:smart_tracking/api/datasources/login_datasource.dart' as _i805;
 import 'package:smart_tracking/api/datasources/vehicle_datasource.dart'
     as _i810;
 import 'package:smart_tracking/api/provider_api_module.dart' as _i901;
-import 'package:smart_tracking/base/repository/geo_fence_repository.dart'
-    as _i541;
 import 'package:smart_tracking/base/repository/vehicle_repository.dart'
     as _i1051;
+import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart'
+    as _i416;
 import 'package:smart_tracking/login/repository/login_repository.dart' as _i956;
 import 'package:smart_tracking/utils/app_navigator.dart' as _i405;
 import 'package:smart_tracking/utils/helper_module.dart' as _i891;
@@ -64,8 +64,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i956.LoginRepository.from(gh<_i805.LoginDataSource>()));
     gh.factory<_i1051.VehicleRepository>(
         () => _i1051.VehicleRepository.from(gh<_i810.VehicleDataSource>()));
-    gh.factory<_i541.GeoFenceRepository>(
-        () => _i541.GeoFenceRepository.from(gh<_i1063.GeoFenceDataSource>()));
+    gh.factory<_i416.GeoFenceRepository>(
+        () => _i416.GeoFenceRepository.from(gh<_i1063.GeoFenceDataSource>()));
     return this;
   }
 }

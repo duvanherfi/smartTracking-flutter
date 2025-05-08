@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
-import 'package:smart_tracking/base/repository/geo_fence_repository.dart';
+import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart';
 import 'package:smart_tracking/base/repository/vehicle_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smart_tracking/utils/app_component.dart';
@@ -64,6 +64,7 @@ class BaseScreenViewModel extends AppBaseViewModel {
       ), onPressed: () {
         appNavigator.push(Routes.addGeoFence, arguments: {
           'vehicle': vehicle,
+          'vehicles': vehicles
         });
       },
     );

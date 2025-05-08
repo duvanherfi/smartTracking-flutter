@@ -8,6 +8,7 @@ import 'package:smart_tracking/widgets/drawer_widget.dart';
 import 'package:smart_tracking/widgets/history_widget.dart';
 import 'package:smart_tracking/widgets/home_widget.dart';
 import 'package:smart_tracking/widgets/loading.dart';
+import 'package:smart_tracking/widgets/splash_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class BaseScreen extends StackedView<BaseScreenViewModel> {
@@ -142,7 +143,8 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                         tooltip: 'Soporte'),
                   ],
                 ),
-                body: Container(
+                body: viewModel.loading ? const SplashWidget() :
+                Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: const BoxDecoration(

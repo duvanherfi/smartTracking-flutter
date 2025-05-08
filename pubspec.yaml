@@ -57,7 +57,8 @@ dependencies:
   flutter_html: ^3.0.0
   syncfusion_flutter_gauges: ^29.1.35
   easy_debounce: ^2.0.3
-  fluttertoast: ^8.2.12
+  multiselect: ^0.1.0
+
 
 dev_dependencies:
   flutter_test:
