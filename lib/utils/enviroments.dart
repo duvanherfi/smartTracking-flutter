@@ -10,7 +10,7 @@ class Environments {
 
   static bool get isProductive => isProduction || isBeta;
 
-  static const String production = 'https://api.smartracking.app/api/v1/';
+  static const String production = 'https://smart-tracking-bcc894279cf1.herokuapp.com/api/v1/';
 
   static String get baseUrl => _envs["base_url"]!;
 
@@ -18,7 +18,7 @@ class Environments {
   static Map<String, String> get envs => Map.unmodifiable(_envs);
 
   static Map<String, String> _envs = {
-    'base_url': 'http://192.168.31.104:3001/api/v1/',
+    'base_url': 'https://smart-tracking-bcc894279cf1.herokuapp.com/api/v1/',
   };
 
   static Map<String, dynamic> _json = {};

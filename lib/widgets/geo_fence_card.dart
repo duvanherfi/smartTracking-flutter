@@ -22,109 +22,112 @@ class GeoFenceCard extends ViewModelWidget<BaseScreenViewModel> {
         .map((points) => LatLng(points[1], points[0]))
         .toList();
     debugPrint('Coordinates: $coordinates');
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-                color: const Color(0xFF1942DB),
-                width: 2
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: height / 2,
-                width: width / 2,
-                child:  Column(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1942DB),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        onPressed: ()=>Null,
-                        child: const Text(
-                          "Geocerca",
-                          style: TextStyle(
-                              color: Colors.white
-                          ),
-                        )
-                    ),
-                    Text(
-                      '${geoFence.name} creada cerca de ${geoFence.labelDirection}',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      maxLines: 7,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
-                ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 5),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                  color: const Color(0xFF1942DB),
+                  width: 2
               ),
-              SizedBox(
-                width: width / 2 - 10,
-                height: height,
-                child: FlutterMap(
-                  options: MapOptions(
-
-                    onTap: (t, pos) => {},
-                    initialCenter: LatLng.fromJson(
-                        geoFence.centroidGeojson!.toJson()
-                    ),
-                    initialZoom: 11,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: height / 2,
+                  width: width / 2,
+                  child:  Column(
+                    spacing: 10,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1942DB),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          onPressed: ()=>Null,
+                          child: const Text(
+                            "Geocerca",
+                            style: TextStyle(
+                                color: Colors.white
+                            ),
+                          )
+                      ),
+                      Text(
+                        '${geoFence.name} creada cerca de ${geoFence.labelDirection}',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        maxLines: 7,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
                   ),
-                  children: [
-                    TileLayer(
-                      // Bring your own tiles
-                      urlTemplate:
-                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      // For demonstration only
-                      userAgentPackageName: 'com.smart.tracking.smart_tracking', // Add your app identifier
-                      // And many more recommended properties!
-                    ),
-                    RichAttributionWidget(
-                      // Include a stylish prebuilt attribution widget that meets all requirments
-                      attributions: [
-                        TextSourceAttribution(
-                          'OpenStreetMap contributors',
-                          onTap: () => launchUrl(Uri.parse(
-                              'https://openstreetmap.org/copyright')), // (external)
-                        ),
-                        // Also add images...
-                      ],
-                    ),
-                    PolygonLayer(
-                      polygons: [
-                        Polygon(
-                          points: coordinates,
-                          borderStrokeWidth: 3,
-                          borderColor: Colors.blueAccent,
-                        ),
-                      ],
-                    )
-                  ],
                 ),
-              )
+                SizedBox(
+                  width: width / 2 - 10,
+                  height: height,
+                  child: FlutterMap(
+                    options: MapOptions(
+                      onMapEvent: (p0) {},
+                      onTap: (t, pos) => {},
+                      initialCenter: LatLng.fromJson(
+                          geoFence.centroidGeojson!.toJson()
+                      ),
+                      initialZoom: 11,
+                    ),
+                    children: [
+                      TileLayer(
+                        // Bring your own tiles
+                        urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        // For demonstration only
+                        userAgentPackageName: 'com.smart.tracking.smart_tracking', // Add your app identifier
+                        // And many more recommended properties!
+                      ),
+                      RichAttributionWidget(
+                        // Include a stylish prebuilt attribution widget that meets all requirments
+                        attributions: [
+                          TextSourceAttribution(
+                            'OpenStreetMap contributors',
+                            onTap: () => launchUrl(Uri.parse(
+                                'https://openstreetmap.org/copyright')), // (external)
+                          ),
+                          // Also add images...
+                        ],
+                      ),
+                      PolygonLayer(
+                        polygons: [
+                          Polygon(
+                            points: coordinates,
+                            borderStrokeWidth: 3,
+                            borderColor: Colors.blueAccent,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
 
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

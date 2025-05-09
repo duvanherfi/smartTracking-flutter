@@ -28,4 +28,15 @@ final class _$VehicleDataSource extends VehicleDataSource {
     );
     return client.send<List<Vehicle>, Vehicle>($request);
   }
+
+  @override
+  Future<Response<AreaGeoJson>> getRecommended(String vehicleId) {
+    final Uri $url = Uri.parse('/vehicles/${vehicleId}/recommended');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<AreaGeoJson, AreaGeoJson>($request);
+  }
 }

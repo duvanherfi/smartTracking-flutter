@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/datasources/vehicle_datasource.dart';
+import 'package:smart_tracking/api/model/area_geojson.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/api/repository/app_base_repository.dart';
 
@@ -14,6 +15,12 @@ class VehicleRepository extends AppBaseRepository<VehicleDataSource> {
 
   Future<ApiResult<List<Vehicle>>> getVehicles() {
     return _dataSource.getVehicles().then((value) {
+      return value.toApiResult();
+    });
+  }
+
+  Future<ApiResult<AreaGeoJson>> getRecommended(String vehicleId) {
+    return _dataSource.getRecommended(vehicleId).then((value) {
       return value.toApiResult();
     });
   }

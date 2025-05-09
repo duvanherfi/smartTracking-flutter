@@ -92,4 +92,9 @@ class Vehicle {
   factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);
 
   Map<String, dynamic> toJson() => _$VehicleToJson(this);
+
+  @override
+  String toString() {
+    return "$plates";
+  }
 }

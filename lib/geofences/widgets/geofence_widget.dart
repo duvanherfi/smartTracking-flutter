@@ -15,13 +15,16 @@ class GeofenceWidget extends ViewModelWidget<BaseScreenViewModel> {
   Widget build(BuildContext context, BaseScreenViewModel viewModel) {
     return viewModel.geoFences.length > 0
         ? SizedBox(
-            child: ListView.builder(
-              itemCount: viewModel.geoFences.length,
-              controller: ScrollController(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return GeoFenceCard(geoFence: viewModel.geoFences[index]);
-              },
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 3, top: 3),
+              child: ListView.builder(
+                itemCount: viewModel.geoFences.length,
+                controller: ScrollController(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return GeoFenceCard(geoFence: viewModel.geoFences[index]);
+                },
+              ),
             ),
           )
         : const Center(

@@ -29,6 +29,8 @@ class GeoFence {
   double? lat;
   @JsonKey(name: "lon")
   double? lon;
+  @JsonKey(name: "radius")
+  double? radius;
   @JsonKey(name: "user_id")
   String? userId;
   @JsonKey(name: "vehicle_ids")
@@ -48,6 +50,7 @@ class GeoFence {
     this.labelDirection,
     this.lat,
     this.lon,
+    this.radius
   });
 
   factory GeoFence.fromJson(Map<String, dynamic> json) => _$GeoFenceFromJson(json);

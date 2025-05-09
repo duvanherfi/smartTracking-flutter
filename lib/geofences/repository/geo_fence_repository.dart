@@ -16,4 +16,10 @@ class GeoFenceRepository extends AppBaseRepository<GeoFenceDataSource> {
       return value.toApiResult();
     });
   }
+
+  Future<ApiResult<GeoFence>> createGeoFences(Map<String, GeoFence> body) {
+    return _dataSource.createGeoFence(body).then((value) {
+      return value.toApiResult();
+    });
+  }
 }

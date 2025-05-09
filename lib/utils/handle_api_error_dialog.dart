@@ -35,6 +35,11 @@ FutureOr<dynamic> handleApiErrorDialog(
         exception.error!,
         onAcceptEvent: (_) => click?.call(),
       );
+    } else {
+      showPiDialog(
+        exception.toString(),
+        onAcceptEvent: (_) => click?.call(),
+      );
     }
   } else {
     showPiDialog(
