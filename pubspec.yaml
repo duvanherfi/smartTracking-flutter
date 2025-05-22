@@ -58,6 +58,7 @@ dependencies:
   syncfusion_flutter_gauges: ^29.1.35
   easy_debounce: ^2.0.3
   multiselect: ^0.1.0
+  flutter_map_dragmarker: ^8.0.3
 
 
 dev_dependencies:

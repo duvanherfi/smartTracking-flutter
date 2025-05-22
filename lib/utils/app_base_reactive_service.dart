@@ -1,7 +1,6 @@
 import 'package:stacked/stacked.dart';
-import 'package:flutter/material.dart';
 
-class AppBaseReactiveService with ReactiveServiceMixin{
+class AppBaseReactiveService with ListenableServiceMixin{
   final ReactiveValue<bool> loadingReactiveValue = ReactiveValue(false);
 
   AppBaseReactiveService() {

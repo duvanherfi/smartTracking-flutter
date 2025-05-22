@@ -124,7 +124,6 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
 
                             // On another side, can access all field values without saving form with instantValues
                             if (_formKey.currentState!.validate()) {
-                              debugPrint(_formKey.currentState?.instantValue.toString());
                               appNavigator.clearStackAndShow(Routes.login);
                               showDialog(
                                 context: context,

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
+import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/shared_preferences_v2.dart';
 import 'package:smart_tracking/utils/style/dialog.style.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:smart_tracking/routes.dart';
-import 'package:smart_tracking/utils/extensions/string_extensions.dart';
-
-import 'home/view_model/home_view_model.dart';
 
 final GetIt locator = GetIt.instance;
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

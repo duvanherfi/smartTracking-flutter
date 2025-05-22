@@ -1,27 +1,20 @@
-import 'dart:async';
-import 'package:chopper/src/response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:smart_tracking/api/datasources/login_datasource.dart';
-import 'package:smart_tracking/utils/app_component.dart';
-import 'package:smart_tracking/utils/app_base_view_model.dart';
-import 'package:stacked/stacked.dart';
-
+import 'package:smart_tracking/api/api_exception.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/model/sesion.dart';
-import 'package:smart_tracking/routes.dart';
-import 'package:smart_tracking/utils/shared_preferences_v2.dart';
-import 'package:smart_tracking/login/repository/login_repository.dart';
-
 import 'package:smart_tracking/api/model/session_response.dart';
-
+import 'package:smart_tracking/login/repository/login_repository.dart';
+import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/services/home_services.dart';
+import 'package:smart_tracking/utils/app_base_view_model.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
-
-import 'package:smart_tracking/api/api_exception.dart';
 
 
 class LoginViewModel extends AppBaseViewModel {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final _homeServices = locator<HomeServices>();
   bool viewModelLoading = false;
   bool isCharging = false;
   final formKey = GlobalKey<FormBuilderState>();
@@ -61,7 +54,8 @@ class LoginViewModel extends AppBaseViewModel {
           await sharedPreferencesV2.setUserName(
             sessionResponse.user.name
           );
-        appNavigator.pushReplacement(Routes.home);
+          _homeServices.resetValues();
+          appNavigator.pushReplacement(Routes.home);
         } else {
           throw response.apiException as ApiException;
         }

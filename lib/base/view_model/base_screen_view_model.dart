@@ -1,39 +1,26 @@
 import 'dart:async';
-import 'dart:ffi';
+
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
-import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart';
-import 'package:smart_tracking/base/repository/vehicle_repository.dart';
-import 'package:get_it/get_it.dart';
-import 'package:smart_tracking/utils/app_component.dart';
-import 'package:smart_tracking/utils/app_base_view_model.dart';
-import 'package:stacked/stacked.dart';
-
 import 'package:smart_tracking/routes.dart';
-
-import 'package:smart_tracking/api/api_result.dart';
-import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
-
-import 'package:smart_tracking/api/api_exception.dart';
+import 'package:smart_tracking/services/home_services.dart';
+import 'package:smart_tracking/utils/app_base_view_model.dart';
+import 'package:smart_tracking/utils/app_component.dart';
+import 'package:smart_tracking/utils/extensions/dialog.extension.dart';
+import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:easy_debounce/easy_debounce.dart';
-
-import '../../utils/extensions/dialog.extension.dart';
 
 
 class BaseScreenViewModel extends AppBaseViewModel {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final _homeServices = locator<HomeServices>();
   bool viewModelLoading = false;
   bool isCharging = false;
   int currentIndex = 2;
-  String? vehicleId;
-  Vehicle? vehicle;
-  List<Vehicle> vehicles = [];
-  List<GeoFence> geoFences = [];
   AppLifecycleListener? _listener;
-  bool get loading => viewModelLoading;
   IconButton? notificationsButton;
   IconButton? addGeoFenceButton;
   bool addGeoFence = false;
@@ -43,6 +30,18 @@ class BaseScreenViewModel extends AppBaseViewModel {
   late IconButton selectedButton;
   List<LatLng> freePolygon = [];
 
+  bool get loading => viewModelLoading || _homeServices.loadingReactiveValue.value;
+  Vehicle? get vehicle => _homeServices.vehicle.value;
+  String? get vehicleId => _homeServices.vehicleId.value;
+  List<Vehicle> get vehicles => _homeServices.vehicles.value;
+  List<GeoFence> get geoFences => _homeServices.geoFences.value;
+  GeoFence? get geoFence => _homeServices.geoFence.value;
+  set vehicleId(String? id) => _homeServices.vehicleId.value = id;
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [
+    _homeServices
+  ];
 
   BaseScreenViewModel(BuildContext context) {
     appLifeCycle();
@@ -62,10 +61,7 @@ class BaseScreenViewModel extends AppBaseViewModel {
           Icons.add,
           color: Colors.white, size: 45
       ), onPressed: () {
-        appNavigator.push(Routes.addGeoFence, arguments: {
-          'vehicle': vehicle,
-          'vehicles': vehicles
-        });
+        appNavigator.push(Routes.addGeoFence);
       },
     );
     selectedButton = notificationsButton!;
@@ -74,20 +70,22 @@ class BaseScreenViewModel extends AppBaseViewModel {
   }
 
   void appLifeCycle() {
-    _listener ??= AppLifecycleListener(onResume: () {
-    EasyDebounce.debounce(
-         'getVehicles', const Duration(milliseconds: 300), getVehicles);
+    _listener ??= AppLifecycleListener(onStateChange: (_) {
+      EasyDebounce.debounce(
+           'getVehicles', const Duration(milliseconds: 300), getVehicles
+      );
     });
   }
 
   void _init(BuildContext context) async {
-    getVehicles();
+    if (_homeServices.vehicles.value.isEmpty) {
+      _homeServices.getVehicles();
+    }
     validateSession();
   }
 
 
   Future onDrawerItemTap(String id) async {
-    var event = 'home';
     switch (id) {
       case 'home':
         appNavigator.popUntil((route) => route.isFirst);
@@ -104,13 +102,11 @@ class BaseScreenViewModel extends AppBaseViewModel {
 
   double getVehicleLat() {
     final value = double.tryParse(vehicle?.lat.toString() ?? "3.5978107991775845") as double;
-    debugPrint("lat: $value");
     return value;
   }
 
   double getVehicleLon() {
     final value = double.tryParse(vehicle?.lon.toString() ?? "98.6708786302183") as double;
-    debugPrint("lon: $value");
     return value;
   }
 
@@ -118,50 +114,15 @@ class BaseScreenViewModel extends AppBaseViewModel {
     final lat = getVehicleLat();
     final lon = getVehicleLon();
     final value = LatLng(lat, lon);
-    debugPrint("value: ${value.toJson()}");
     return value;
   }
 
   Future<void> getVehicles() async {
-    viewModelLoading = true;
-    notifyListeners();
-    locator<VehicleRepository>().getVehicles().then((response) async {
-      if (response.status == Status.COMPLETED) {
-        vehicles = response.data as List<Vehicle>;
-        vehicle = vehicles.first;
-        vehicleId = vehicle?.id.toString();
-
-        notifyListeners();
-      } else {
-        throw response.apiException as ApiException;
-      }
-    }).catchError((error) {
-      // Handle error
-      debugPrint('Error: $error');
-      handleApiErrorDialog(error);
-    }).whenComplete((){
-      viewModelLoading = false;
-      notifyListeners();
-    });
+    _homeServices.getVehicles();
   }
 
   Future<void> getGeoFences() async {
-    viewModelLoading = true;
-    notifyListeners();
-    locator<GeoFenceRepository>().getGeoFences().then((response) async {
-      if (response.status == Status.COMPLETED) {
-        geoFences = response.data as List<GeoFence>;
-        notifyListeners();
-      } else {
-        throw response.apiException as ApiException;
-      }
-    }).catchError((error) {
-      debugPrint('Error: $error');
-      handleApiErrorDialog(error);
-    }).whenComplete((){
-      viewModelLoading = false;
-      notifyListeners();
-    });
+    _homeServices.getGeoFences();
   }
 
   void setGeofenceRadius(double value) {
@@ -217,16 +178,16 @@ class BaseScreenViewModel extends AppBaseViewModel {
     }
   }
 
-  void onitemsTap(id) {
+  void onItemsTap(id) {
     switch (id) {
       case 0:
         currentIndex = id;
         break;
       case 1:
         currentIndex = id;
-        getGeoFences();
         selectedButton = addGeoFenceButton!;
         notifyListeners();
+        getGeoFences();
         break;
       case 2:
         currentIndex = id;
@@ -242,5 +203,10 @@ class BaseScreenViewModel extends AppBaseViewModel {
             'https://wa.me/573001112233?text=Hola,%20necesito%20soporte%20con%20mi%20suscripción%20de%20Smart%20Tracking'));
         break;
     }
+  }
+
+  void setGeoFence(GeoFence geoFence) {
+    _homeServices.geoFence.value = geoFence;
+    notifyListeners();
   }
 }

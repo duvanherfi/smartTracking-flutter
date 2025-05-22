@@ -14,6 +14,12 @@ abstract class GeoFenceDataSource extends ChopperService {
     @Body()  Map<String, GeoFence> body,
   );
 
+  @PUT(path: "{id}")
+  Future<Response<GeoFence>> updateGeoFence(
+    @Path("id") String id,
+    @Body()  Map<String, GeoFence> body,
+  );
+
   static _$GeoFenceDataSource create([ChopperClient? client]) =>
       _$GeoFenceDataSource(client);
 }

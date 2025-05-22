@@ -32,6 +32,7 @@ GeoFence _$GeoFenceFromJson(Map<String, dynamic> json) => GeoFence(
       lat: (json['lat'] as num?)?.toDouble(),
       lon: (json['lon'] as num?)?.toDouble(),
       radius: (json['radius'] as num?)?.toDouble(),
+      typeCD: (json['type_cd'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$GeoFenceToJson(GeoFence instance) => <String, dynamic>{
@@ -51,4 +52,5 @@ Map<String, dynamic> _$GeoFenceToJson(GeoFence instance) => <String, dynamic>{
       if (instance.radius case final value?) 'radius': value,
       if (instance.userId case final value?) 'user_id': value,
       if (instance.vehicleIds case final value?) 'vehicle_ids': value,
+      if (instance.typeCD case final value?) 'type_cd': value,
     };

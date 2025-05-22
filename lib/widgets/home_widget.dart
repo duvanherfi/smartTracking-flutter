@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:smart_tracking/base/view_model/base_view_model.dart';
+import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
 import 'package:smart_tracking/widgets/content_oval.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_dragmarker/flutter_map_dragmarker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smart_tracking/api/model/area_geojson.dart';
 import 'package:smart_tracking/api/model/centroid_geojson.dart';
@@ -17,12 +18,16 @@ import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
 
 import 'package:smart_tracking/utils/extensions/dialog.extension.dart';
 
+import 'package:smart_tracking/services/home_services.dart';
+import 'package:stacked/stacked.dart';
+
 
 class GeoFencesViewModel extends AppBaseViewModel {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final GlobalKey mapKey = GlobalKey();
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
   final numberKey = GlobalKey<FormBuilderFieldState>();
+  final _homeServices = locator<HomeServices>();
   bool viewModelLoading = false;
   bool isCharging = false;
   bool showForm = false;
@@ -30,27 +35,45 @@ class GeoFencesViewModel extends AppBaseViewModel {
   AreaGeoJson? recommended;
 
   GeofenceMode mode = GeofenceMode.circle;
-  Vehicle? vehicle;
-  List<Vehicle> vehicles = [];
   List<Vehicle> selectedVehicles = [];
   double geofenceRadius = 1000;
   LatLng? centerCircle;
   List<LatLng> freePolygon = [];
   MapController mapController = MapController();
 
-  bool get loading => viewModelLoading;
+  bool get loading => viewModelLoading || _homeServices.loadingReactiveValue.value;
+  Vehicle? get vehicle => _homeServices.vehicle.value;
+  List<Vehicle> get vehicles => _homeServices.vehicles.value;
+  GeoFence? get geoFence => _homeServices.geoFence.value;
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [
+    _homeServices
+  ];
 
 
-  GeoFencesViewModel(BuildContext context);
+  GeoFencesViewModel(BuildContext context){
+    _init();
+  }
+
+  void _init() {
+    if(geoFence != null){
+      debugPrint("geoFence: ${geoFence?.toJson()}");
+      mode = GeofenceMode.values[geoFence!.typeCD ?? 1];
+      geofenceRadius = (geoFence!.radius ?? 1) * 1000;
+      if (mode == GeofenceMode.circle) {
+        centerCircle = LatLng(geoFence!.centroidGeojson!.coordinates[1], geoFence!.centroidGeojson!.coordinates[0]);
+      } else if (mode == GeofenceMode.free || mode == GeofenceMode.recommended) {
+        freePolygon = geoFence!.areaGeojson!.coordinates[0].map((e) => LatLng(e[1], e[0])).toList();
+      }
+      selectedVehicles = vehicles.where((v) => geoFence?.vehicleIds?.contains(v.id) ?? false).toList();
+      notifyListeners();
+    }
+  }
 
   void setShowForm(bool value) {
     showForm = value;
     notifyListeners();
-  }
-
-  void setVehiclesInfo(args) {
-    vehicle = args["vehicle"] as Vehicle;
-    vehicles = args["vehicles"] as List<Vehicle>;
   }
 
   dynamic setSelectedVehicles(List<dynamic> vehicles) {
@@ -112,50 +135,22 @@ class GeoFencesViewModel extends AppBaseViewModel {
   }
 
   Widget getMarkers() {
-    return MarkerLayer(
-        markers:  freePolygon.asMap().entries.map((entry) {
-          final index = entry.key;
-          final point = entry.value;
+    return DragMarkers(
+      alignment: Alignment.topCenter,
+      markers: freePolygon.asMap().entries.map((entry) {
+        final index = entry.key;
+        final point = entry.value;
 
-          return Marker(
+        return DragMarker(
             point: point,
-            alignment: Alignment.topCenter,
-            child: Builder(
-                builder: (context){
-                  return Draggable<LatLng>(
-                    data: point,
-                    feedback: const Icon(Icons.location_on, color: Colors.red, size: 40),
-                    childWhenDragging: const Icon(Icons.location_on, color: Colors.grey, size: 40),
-                    child: GestureDetector(
-                      onTap: () {
-                        debugPrint("Marcador seleccionado: $point");
-                      },
-                      child: const Icon(Icons.location_on, color: Colors.red, size: 40),
-                    ),
-                    onDragEnd: (details) {
-                      RenderBox? mapBox = mapKey.currentContext?.findRenderObject() as RenderBox?;
-                      if (mapBox != null) {
-                        MapCamera inheritedCamera = MapCamera.of(context);
-                        Crs crs = inheritedCamera.crs;
-                        Offset localOffset = mapBox.globalToLocal(details.offset);
-                        LatLng newPoint = crs.offsetToLatLng(
-                            localOffset,
-                            inheritedCamera.zoom
-                        );
-                        debugPrint("Marcador arrastrado a: ${point}");
-                        debugPrint("Marcador arrastrado a: ${newPoint}");
-                        //details.offset
-
-                        // Actualiza el punto en freePolygon
-                        //freePolygon[index] = newPoint;
-                        //notifyListeners();
-                      }
-                    },
-                  );
-                }
-            )
-          );
-        }).toList()
+            builder: (_, __, ___) => const Icon(Icons.location_on, size: 50, color: Colors.red,),
+            onDragUpdate: (details, latLng) {
+              freePolygon[index] = latLng;
+              notifyListeners();
+            },
+            size: const Size.square(50)
+        );
+      }).toList(),
     );
   }
 
@@ -201,13 +196,11 @@ class GeoFencesViewModel extends AppBaseViewModel {
 
   double getVehicleLat() {
     final value = double.tryParse(vehicle?.lat.toString() ?? "3.5978107991775845") as double;
-    debugPrint("lat: $value");
     return value;
   }
 
   double getVehicleLon() {
     final value = double.tryParse(vehicle?.lon.toString() ?? "98.6708786302183") as double;
-    debugPrint("lon: $value");
     return value;
   }
 
@@ -215,7 +208,6 @@ class GeoFencesViewModel extends AppBaseViewModel {
     final lat = getVehicleLat();
     final lon = getVehicleLon();
     final value = LatLng(lat, lon);
-    debugPrint("value: ${value.toJson()}");
     return value;
   }
 
@@ -245,6 +237,7 @@ class GeoFencesViewModel extends AppBaseViewModel {
       default:
         mode = GeofenceMode.circle;
     }
+    _init();
     debugPrint("position: $position");
     debugPrint("mode: $mode");
     notifyListeners();
@@ -333,24 +326,43 @@ class GeoFencesViewModel extends AppBaseViewModel {
     return null;
   }
 
+  String? getName(){
+    return geoFence?.name;
+  }
 
+  String? getDescription(){
+   return geoFence?.description;
+  }
+
+  Map<String, GeoFence> getBody(){
+    GeoFence requestGeoFence = GeoFence(
+        id: geoFence?.id ?? "created",
+        vehicleIds: selectedVehicles.map((v) => v.id).toList(),
+        name: formKey.currentState?.fields["name"]?.value,
+        description: formKey.currentState?.fields["description"]?.value,
+        areaGeojson: getAreaGeojson(),
+        centroidGeojson: getCentroidGeojson(),
+        radius: geofenceRadius/1000,
+        typeCD: mode.index
+    );
+    return {
+      "geo_fence": requestGeoFence
+    };
+  }
+
+  void chooseModeApi(){
+    if (geoFence != null) {
+      updateGeofences();
+    } else {
+      createGeofences();
+    }
+  }
 
   Future<void> createGeofences() async {
     viewModelLoading = true;
     notifyListeners();
-    GeoFence geoFence = GeoFence(
-      id: "created",
-      vehicleIds: selectedVehicles.map((v) => v.id).toList(),
-      name: formKey.currentState?.fields["name"]?.value,
-      description: formKey.currentState?.fields["description"]?.value,
-      areaGeojson: getAreaGeojson(),
-      centroidGeojson: getCentroidGeojson(),
-      radius: geofenceRadius/1000,
-    );
-    Map<String, GeoFence> body = {
-      "geo_fence": geoFence
-    };
-    locator<GeoFenceRepository>().createGeoFences(body).then((response) async {
+
+    locator<GeoFenceRepository>().createGeoFence(getBody()).then((response) async {
       if (response.status == Status.COMPLETED) {
         appNavigator.back();
         showPiDialog(
@@ -358,6 +370,7 @@ class GeoFencesViewModel extends AppBaseViewModel {
         );
         viewModelLoading = false;
         notifyListeners();
+        _homeServices.getGeoFences();
       } else {
         throw response.apiException as ApiException;
       }
@@ -371,5 +384,29 @@ class GeoFencesViewModel extends AppBaseViewModel {
     });
   }
 
+  Future<void> updateGeofences() async {
+    viewModelLoading = true;
+    notifyListeners();
 
+    locator<GeoFenceRepository>().updateGeoFence(geoFence!.id, getBody()).then((response) async {
+      if (response.status == Status.COMPLETED) {
+        appNavigator.back();
+        showPiDialog(
+          "Geocerca actualizada exitosamente!",
+        );
+        viewModelLoading = false;
+        notifyListeners();
+        _homeServices.getGeoFences();
+      } else {
+        throw response.apiException as ApiException;
+      }
+    }).catchError((error) {
+      viewModelLoading = false;
+      notifyListeners();
+      handleApiErrorDialog(error);
+    }).whenComplete((){
+      viewModelLoading = false;
+      notifyListeners();
+    });
+  }
 }

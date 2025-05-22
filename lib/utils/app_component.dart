@@ -24,7 +24,7 @@ final galleryDialogService = locator<DialogService>();
 final appNavigator = locator<AppNavigator>();
 final config = locator<Config>();
 final snackBarService = locator<SnackbarService>();
-enum GeofenceMode { free, recommended, circle }
+enum GeofenceMode { circle, free, recommended }
 
 
 void configureLocatorApp() {
