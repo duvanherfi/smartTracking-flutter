@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
-import 'package:smart_tracking/base/view_model/base_view_model.dart';
+import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
 import 'package:smart_tracking/geofences/widgets/geofence_widget.dart';
 import 'package:smart_tracking/utils/disable_glow_scroll.dart';
 import 'package:smart_tracking/widgets/drawer_widget.dart';
@@ -73,13 +73,10 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
       const HomeWidget()
     ];
 
-    Widget childBase = (showErrorBody && errorBody != null)
-        ? errorBody!
-        : widgetOptions[viewModel.currentIndex];
+    Widget childBase = widgetOptions[viewModel.currentIndex];
 
     _setInitialDeviceViewPadding(context);
 
-    // TODO: implement builder
     return Container(
       color: onScrollStatusBarColor ?? backgroundColor ?? Colors.white,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -113,7 +110,7 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                   enableFeedback: true,
                   selectedItemColor: Color(0xFF18BEDB),
                   unselectedItemColor: Color(0xFF6c18db),
-                  onTap: viewModel.onitemsTap,
+                  onTap: viewModel.onItemsTap,
                   items: [
                     const BottomNavigationBarItem(
                       icon: Icon(Icons.history),

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:smart_tracking/api/model/vehicle.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:smart_tracking/geofences/view_model/geofences_view_model.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/widgets/splash_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:multiselect/multiselect.dart';
-import 'package:smart_tracking/utils/app_component.dart';
 
 
 class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
@@ -16,9 +15,6 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
   @override
   Widget builder(
       BuildContext context, GeoFencesViewModel viewModel, Widget? child) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    viewModel.setVehiclesInfo(args);
 
     return Scaffold(
       key: viewModel.scaffoldKey,
@@ -62,6 +58,7 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
             children: [
               const SizedBox(height: 20),
               FormBuilderTextField(
+                initialValue: viewModel.getName(),
                 keyboardType: TextInputType.text,
                 name: 'name',
                 style: const TextStyle(
@@ -91,6 +88,7 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
               FormBuilderTextField(
                 keyboardType: TextInputType.text,
                 name: 'description',
+                initialValue: viewModel.getDescription(),
                 style: const TextStyle(
                     color: Colors.black,
                     height: 2
@@ -147,8 +145,8 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
                 ),
                 height: 50,
                 minWidth: double.infinity,
-                onPressed: viewModel.createGeofences,
-                child: const Text('Crear geocerca'),
+                onPressed: viewModel.chooseModeApi,
+                child: const Text('Guardar geocerca'),
               ),
               const SizedBox(height: 10),
             ],
@@ -211,7 +209,6 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
                 ),
                 onPressed: () {
                   viewModel.setShowForm(true);
-                  debugPrint("continuar: ${viewModel.getMarkerShape()}");
                 },
                 child: const Text("Continuar",
                     style: TextStyle(color: Colors.white)),

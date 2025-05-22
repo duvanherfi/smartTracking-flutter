@@ -35,6 +35,8 @@ class GeoFence {
   String? userId;
   @JsonKey(name: "vehicle_ids")
   List<String?>? vehicleIds;
+  @JsonKey(name: "type_cd")
+  int? typeCD;
 
   GeoFence({
     required this.id,
@@ -50,7 +52,8 @@ class GeoFence {
     this.labelDirection,
     this.lat,
     this.lon,
-    this.radius
+    this.radius,
+    this.typeCD
   });
 
   factory GeoFence.fromJson(Map<String, dynamic> json) => _$GeoFenceFromJson(json);

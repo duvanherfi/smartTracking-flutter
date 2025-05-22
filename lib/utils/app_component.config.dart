@@ -24,6 +24,7 @@ import 'package:smart_tracking/base/repository/vehicle_repository.dart'
 import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart'
     as _i416;
 import 'package:smart_tracking/login/repository/login_repository.dart' as _i956;
+import 'package:smart_tracking/services/home_services.dart' as _i388;
 import 'package:smart_tracking/utils/app_navigator.dart' as _i405;
 import 'package:smart_tracking/utils/helper_module.dart' as _i891;
 import 'package:smart_tracking/utils/shared_preferences_v2.dart' as _i33;
@@ -54,6 +55,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1055.NavigationService>(
         () => helperModuleStacked.navigationService);
     gh.lazySingleton<_i31.ChopperClient>(() => chopperModule.chopperBuilder());
+    gh.lazySingleton<_i388.HomeServices>(() => _i388.HomeServices());
     gh.factory<_i805.LoginDataSource>(() =>
         providerApiModule.provideLoginDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i810.VehicleDataSource>(() =>

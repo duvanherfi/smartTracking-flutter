@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
-import 'package:smart_tracking/base/view_model/base_view_model.dart';
+import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,7 +21,6 @@ class GeoFenceCard extends ViewModelWidget<BaseScreenViewModel> {
     List<LatLng> coordinates = geoFence.areaGeojson!.coordinates.first
         .map((points) => LatLng(points[1], points[0]))
         .toList();
-    debugPrint('Coordinates: $coordinates');
     return Padding(
       padding: EdgeInsets.only(bottom: 5),
       child: Column(

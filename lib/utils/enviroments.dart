@@ -19,6 +19,7 @@ class Environments {
 
   static Map<String, String> _envs = {
     'base_url': 'https://smart-tracking-bcc894279cf1.herokuapp.com/api/v1/',
+    //'base_url': 'http://192.168.101.16:3001/api/v1/',
   };
 
   static Map<String, dynamic> _json = {};
