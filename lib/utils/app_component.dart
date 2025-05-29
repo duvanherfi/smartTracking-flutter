@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -52,11 +55,7 @@ void initConverters() {
   errorConverter = RequestJsonErrorConverter();
 }
 
-Future<void> setUpRemoteConfig({
-  bool isInvitation = false,
-  bool fakeGpsEnabledInitialValue = false,
-  VoidCallback? onInvitationCallback,
-}) async {
+Future<void> setUpRemoteConfig() async {
   try {
     locator.registerLazySingleton<Config>(Config.new);
     config.initLocal();
@@ -66,8 +65,17 @@ Future<void> setUpRemoteConfig({
   } catch (_) {
     Environments.initEnvironmentUrls({});
   }
+}
 
-  if (!isInvitation) {
-    onInvitationCallback?.call();
+Future<void> generatePushToken() async {
+  final firebaseMessaging = FirebaseMessaging.instance;
+  String? token;
+  if (Platform.isIOS) {
+    token = await firebaseMessaging.getAPNSToken() ?? '';
+  } else if (Platform.isAndroid) {
+    token = await firebaseMessaging.getToken();
   }
+
+
+  sharedPreferencesV2.setPushTokenFirebase(token);
 }

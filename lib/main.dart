@@ -6,12 +6,19 @@ import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/shared_preferences_v2.dart';
 import 'package:smart_tracking/utils/style/dialog.style.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'firebase_options.dart';
 
 final GetIt locator = GetIt.instance;
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final appNavigatorKey = StackedService.navigatorKey;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseMessaging.instance.requestPermission(provisional: true);
   await dotenv.load();
   configureLocator();
   await initLocators();

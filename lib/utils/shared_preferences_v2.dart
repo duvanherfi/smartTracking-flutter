@@ -7,11 +7,13 @@ class SharedPreferencesV2 {
   static const String _vehicleId = "vehicle_id";
   static const String _userName = "user_name";
   static const String _email = "email";
+  static const String _userId = "user_id";
+  static const String _sessionId = "session_id";
 
   static const String _baseUrlRoutes = "base_url_routes";
   final String _appTheme = 'app_theme';
   final String _appIsHidden = 'app_is_hidden';
-  final String _isDarkModeEnable = 'dark_mode_enable';
+  static const String _pushToken = 'push_token';
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -45,6 +47,36 @@ class SharedPreferencesV2 {
 
   Future<bool> removeVehicleId() async {
     return _prefs.remove(_vehicleId);
+  }
+
+  Future<String?> getUserId() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString(_userId)?.isEmpty == true
+        ? null
+        : _prefs.getString(_userId);
+  }
+
+  Future<bool> setUserId(String? id) async {
+    return _prefs.setString(_userId, id ?? '');
+  }
+
+  Future<bool> removeUserId() async {
+    return _prefs.remove(_userId);
+  }
+
+  Future<String?> getSessionId() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString(_sessionId)?.isEmpty == true
+        ? null
+        : _prefs.getString(_sessionId);
+  }
+
+  Future<bool> setSessionId(String? id) async {
+    return _prefs.setString(_sessionId, id ?? '');
+  }
+
+  Future<bool> removeSessionId() async {
+    return _prefs.remove(_sessionId);
   }
 
   Future<String?> getUserName() async {
@@ -112,20 +144,20 @@ class SharedPreferencesV2 {
     return _prefs.getBool(_appIsHidden) ?? false;
   }
 
-  Future<bool> setIsDarkModeEnabled(bool isDark) async {
-    return _prefs.setBool(_isDarkModeEnable, isDark);
-  }
-
-  Future<bool?> getIsDarkModeEnabled() async {
-    await reload();
-    return _prefs.getBool(_isDarkModeEnable) ?? false;
-  }
-
   Future<bool> setCurrentAppTheme(String theme) async {
     return _prefs.setString(_appTheme, theme);
   }
 
   String? getCurrentAppTheme() {
     return _prefs.getString(_appTheme);
+  }
+
+  Future<bool> setPushTokenFirebase(String? token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(_pushToken, token ?? '');
+  }
+
+  String? getPushTokenFirebase() {
+    return _prefs.getString(_pushToken);
   }
 }

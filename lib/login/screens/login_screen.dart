@@ -21,7 +21,7 @@ class LoginScreen extends StackedView<LoginViewModel> {
       : loginWidget(context);
 
   @override
-  LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel();
+  LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel(context);
 
   Widget loginWidget(BuildContext context) {
     final Uri terms = Uri.parse('https://www.google.com.co');
@@ -33,7 +33,7 @@ class LoginScreen extends StackedView<LoginViewModel> {
     }
 
     return ViewModelBuilder<LoginViewModel>.nonReactive(
-      viewModelBuilder: () => LoginViewModel(),
+      viewModelBuilder: () => LoginViewModel(context),
       builder: (context, viewModel, child) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
@@ -119,7 +119,7 @@ class LoginScreen extends StackedView<LoginViewModel> {
                                   height: 1
                               ),
                               decoration: const InputDecoration(
-                                labelText: 'Constraseña',
+                                labelText: 'Contraseña',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(30)),
                                   borderSide: BorderSide.none,

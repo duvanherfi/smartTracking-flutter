@@ -15,6 +15,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       phone: json['phone'] as String,
       updatedAt: DateTime.parse(json['updated_at'] as String),
       token: json['token'] as String,
+      sessionID: json['session_id'] as String,
+      pushToken: json['push_token'] as String?,
+      password: json['password'] as String?,
+      passwordConfirmation: json['password_confirmation'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -26,4 +30,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'phone': instance.phone,
       'updated_at': instance.updatedAt.toIso8601String(),
       'token': instance.token,
+      'session_id': instance.sessionID,
+      if (instance.pushToken case final value?) 'push_token': value,
+      if (instance.password case final value?) 'password': value,
+      if (instance.passwordConfirmation case final value?)
+        'password_confirmation': value,
     };

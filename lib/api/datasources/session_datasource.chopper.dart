@@ -1,7 +1,7 @@
 // dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_datasource.dart';
+part of 'session_datasource.dart';
 
 // **************************************************************************
 // ChopperGenerator
@@ -9,21 +9,24 @@ part of 'login_datasource.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-final class _$LoginDataSource extends LoginDataSource {
-  _$LoginDataSource([ChopperClient? client]) {
+final class _$SessionDataSource extends SessionDataSource {
+  _$SessionDataSource([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
 
   @override
-  final Type definitionType = LoginDataSource;
+  final Type definitionType = SessionDataSource;
 
   @override
-  Future<Response<SessionResponse>> login(SessionRequest request) {
-    final Uri $url = Uri.parse('/sessions/login');
-    final $body = request;
+  Future<Response<SessionResponse>> updateSession(
+    String id,
+    Session session,
+  ) {
+    final Uri $url = Uri.parse('/sessions/${id}');
+    final $body = session;
     final Request $request = Request(
-      'POST',
+      'PUT',
       $url,
       client.baseUrl,
       body: $body,
