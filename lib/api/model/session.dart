@@ -1,15 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'sesion.g.dart';
+part 'session.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class Session {
-  @JsonKey(name: 'phone')
-  String? phone;
-  @JsonKey(name: 'password')
-  String? password;
+  @JsonKey(name: '_id')
+  String id;
+  @JsonKey(name: 'token')
+  String token;
+  @JsonKey(name: 'push_token')
+  String pushToken;
 
-  Session({this.phone, this.password});
+  Session({
+    required this.id,
+    required this.token,
+    required this.pushToken,
+  });
 
   factory Session.fromJson(Map<String, dynamic> json) =>
       _$SessionFromJson(json);

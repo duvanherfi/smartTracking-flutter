@@ -52,7 +52,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       _builderItemDrawer(
           "Datos de usuario",
           const Icon(Icons.tune, color: Color(0xFF6C18DB), size: 50),
-          'profile'
+          'user'
       ),
     );
     drawerItem.add(

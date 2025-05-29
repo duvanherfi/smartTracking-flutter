@@ -11,6 +11,8 @@ import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/api/request_json_converter.dart';
 
 import 'model/area_geojson.dart';
+import 'model/session.dart';
+import 'model/user.dart';
 
 
 class BaseChopperModule {
@@ -29,10 +31,12 @@ class BaseChopperModule {
 final RequestJsonConverter converters = RequestJsonConverter(
   {
     SessionResponse: SessionResponse.fromJson,
+    Session: Session.fromJson,
     Vehicle: Vehicle.fromJson,
     GeoFence: GeoFence.fromJson,
     AreaGeoJson: AreaGeoJson.fromJson,
     CentroidGeojson: CentroidGeojson.fromJson,
+    User: User.fromJson,
   },
 );
 

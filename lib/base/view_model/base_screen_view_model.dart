@@ -70,7 +70,7 @@ class BaseScreenViewModel extends AppBaseViewModel {
   }
 
   void appLifeCycle() {
-    _listener ??= AppLifecycleListener(onStateChange: (_) {
+    _listener ??= AppLifecycleListener(onShow: () {
       EasyDebounce.debounce(
            'getVehicles', const Duration(milliseconds: 300), getVehicles
       );
@@ -162,8 +162,8 @@ class BaseScreenViewModel extends AppBaseViewModel {
         currentIndex = 2;
         notifyListeners();
         break;
-      case 'profile':
-        appNavigator.push(Routes.profile);
+      case 'user':
+        appNavigator.push(Routes.user);
         break;
       case 'politics':
         launchUrl(
