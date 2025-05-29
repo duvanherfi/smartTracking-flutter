@@ -41,7 +41,7 @@ class HomeViewModel extends AppBaseViewModel {
         appNavigator.popUntil((route) => route.isFirst);
         break;
       case 'user':
-        appNavigator.push(Routes.profile);
+        appNavigator.push(Routes.user);
         break;
     }
   }
