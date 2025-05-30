@@ -2,7 +2,6 @@ import 'package:injectable/injectable.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/datasources/session_datasource.dart';
 import 'package:smart_tracking/api/model/session.dart';
-
 import 'package:smart_tracking/api/repository/app_base_repository.dart';
 
 @injectable

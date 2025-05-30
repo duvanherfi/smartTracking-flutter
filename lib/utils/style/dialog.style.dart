@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stacked_services/stacked_services.dart';
-
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/components/confirm_dialog.component.dart';
+import 'package:stacked_services/stacked_services.dart';
 enum DialogType {
   confirmDialog,
 }

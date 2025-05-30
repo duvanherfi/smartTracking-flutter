@@ -82,8 +82,14 @@ class GeoFenceCard extends ViewModelWidget<BaseScreenViewModel> {
                   height: height,
                   child: FlutterMap(
                     options: MapOptions(
-                      onMapEvent: (p0) {},
-                      onTap: (t, pos) => {},
+                      interactionOptions: const InteractionOptions(
+                        flags: InteractiveFlag.none
+                      ),
+                      onTap: (_, __) {
+                        viewModel.geoFenceAction(
+                            context, geoFence
+                        );
+                      },
                       initialCenter: LatLng.fromJson(
                           geoFence.centroidGeojson!.toJson()
                       ),

@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
+import 'package:smart_tracking/api/model/mssg_response.dart';
 
 part 'geo_fence_datasource.chopper.dart';
 
@@ -18,6 +19,11 @@ abstract class GeoFenceDataSource extends ChopperService {
   Future<Response<GeoFence>> updateGeoFence(
     @Path("id") String id,
     @Body()  Map<String, GeoFence> body,
+  );
+
+  @DELETE(path: "{id}")
+  Future<Response<MssgResponse>> deleteGeoFence(
+    @Path("id") String id
   );
 
   static _$GeoFenceDataSource create([ChopperClient? client]) =>

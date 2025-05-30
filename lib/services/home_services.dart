@@ -6,7 +6,6 @@ import 'package:smart_tracking/api/api_exception.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/session.dart';
-import 'package:smart_tracking/api/model/session_request.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
 import 'package:smart_tracking/api/model/user.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
@@ -17,9 +16,8 @@ import 'package:smart_tracking/user/repository/user_repository.dart';
 import 'package:smart_tracking/utils/app_base_reactive_service.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
-import 'package:stacked/stacked.dart';
-
 import 'package:smart_tracking/utils/shared_preferences_v2.dart';
+import 'package:stacked/stacked.dart';
 
 @lazySingleton
 class HomeServices extends AppBaseReactiveService {

@@ -6,6 +6,7 @@ import 'package:smart_tracking/api/chopper_http_logging_interceptor.dart';
 import 'package:smart_tracking/api/chopper_request_interceptor.dart';
 import 'package:smart_tracking/api/model/centroid_geojson.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
+import 'package:smart_tracking/api/model/mssg_response.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/api/request_json_converter.dart';
@@ -37,6 +38,7 @@ final RequestJsonConverter converters = RequestJsonConverter(
     AreaGeoJson: AreaGeoJson.fromJson,
     CentroidGeojson: CentroidGeojson.fromJson,
     User: User.fromJson,
+    MssgResponse: MssgResponse.fromJson,
   },
 );
 

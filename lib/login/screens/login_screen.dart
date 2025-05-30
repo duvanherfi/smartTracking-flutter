@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:smart_tracking/login/view_model/login_view_model.dart';
-import 'package:stacked/stacked.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/utils/app_component.dart';
-
 import 'package:smart_tracking/widgets/splash_widget.dart';
+import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StackedView<LoginViewModel> {
   const LoginScreen({super.key});

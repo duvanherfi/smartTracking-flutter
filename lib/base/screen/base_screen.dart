@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
-import 'package:smart_tracking/geofences/widgets/geofence_widget.dart';
 import 'package:smart_tracking/utils/disable_glow_scroll.dart';
 import 'package:smart_tracking/widgets/drawer_widget.dart';
-import 'package:smart_tracking/widgets/history_widget.dart';
-import 'package:smart_tracking/widgets/home_widget.dart';
 import 'package:smart_tracking/widgets/loading.dart';
 import 'package:smart_tracking/widgets/splash_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -60,22 +57,10 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
 
   static EdgeInsets? deviceViewPadding;
 
-  void _setInitialDeviceViewPadding(BuildContext context) {
-    BaseScreen.deviceViewPadding ??= MediaQuery.of(context).viewPadding;
-  }
-
   @override
   Widget builder(
       BuildContext context, BaseScreenViewModel viewModel, Widget? child) {
-    final List<Widget> widgetOptions = <Widget>[
-      const HistoryWidget(),
-      const GeofenceWidget(),
-      const HomeWidget()
-    ];
-
-    Widget childBase = widgetOptions[viewModel.currentIndex];
-
-    _setInitialDeviceViewPadding(context);
+    final size = MediaQuery.of(context).size;
 
     return Container(
       color: onScrollStatusBarColor ?? backgroundColor ?? Colors.white,
@@ -103,7 +88,7 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                 appBar: appBar,
                 drawer: DrawerWidget(viewModel.onDrawerTap),
                 floatingActionButton: fab,
-                bottomNavigationBar: BottomNavigationBar(
+                bottomNavigationBar: viewModel.vehicleMap ? null : BottomNavigationBar(
                   iconSize: 70,
                   type: BottomNavigationBarType.fixed,
                   currentIndex: viewModel.currentIndex,
@@ -142,8 +127,8 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                 ),
                 body: viewModel.loading ? const SplashWidget() :
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: size.width,
+                  height: size.height,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/images/background.png'),
@@ -151,8 +136,8 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                     ),
                   ),
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: size.width,
+                    height: size.height,
                     decoration: BoxDecoration(
                       color: const Color(0xFF18BEDB).withOpacity(0.88),
                     ),
@@ -166,12 +151,12 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                             backgroundColor: Colors.grey.withOpacity(0.2),
                           )
                               : Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
+                            width: size.width,
+                            height: size.height,
                             padding: const EdgeInsets.only(
-                                top: 100, left: 20, right: 20
+                                top: 100,
                             ),
-                            child: childBase,
+                            child: viewModel.childBase,
                           ),
                         ),
                         Positioned(
@@ -179,15 +164,15 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  IconButton(
-                                      icon: const Icon(Icons.menu,
-                                          color: Colors.white, size: 45),
-                                      onPressed: () {
-                                        viewModel.scaffoldKey.currentState?.openDrawer();
-                                      }),
                                   const Padding(
                                       padding:
-                                      EdgeInsets.symmetric(horizontal: 50)),
+                                      EdgeInsets.only(left: 2)
+                                  ),
+                                  viewModel.getFirstButton(),
+                                  const Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(horizontal: 50)
+                                  ),
 
                                   //crear lista desplegable con opción de 'vehiculo 1'
                                   DropdownButton(

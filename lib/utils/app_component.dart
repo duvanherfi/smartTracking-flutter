@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:smart_tracking/api/request_json_error_converter.dart';
-import 'package:smart_tracking/utils/app_component.config.dart';
-import 'package:smart_tracking/utils/shared_preferences_v2.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'app_navigator.dart';
 import 'package:smart_tracking/api/base_chopper_module.dart';
 import 'package:smart_tracking/api/datasources/datasources.dart';
-
+import 'package:smart_tracking/api/request_json_error_converter.dart';
+import 'package:smart_tracking/utils/app_component.config.dart';
 import 'package:smart_tracking/utils/config.dart';
-
 import 'package:smart_tracking/utils/enviroments.dart';
+import 'package:smart_tracking/utils/shared_preferences_v2.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'app_navigator.dart';
 
 final GetIt locator = GetIt.instance;
 

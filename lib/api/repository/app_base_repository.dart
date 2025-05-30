@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
-import 'package:smart_tracking/utils/app_component.dart';
 import 'package:chopper/chopper.dart';
-import 'package:smart_tracking/api/api_result.dart';
-import 'package:smart_tracking/api/api_exception.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart_tracking/api/api_exception.dart';
+import 'package:smart_tracking/api/api_result.dart';
 
 abstract class AppBaseRepository<T> {
   late final T datasource;

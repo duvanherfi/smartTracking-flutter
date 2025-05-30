@@ -127,11 +127,7 @@ class AddGeofenceScreen extends StackedView<GeoFencesViewModel> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(
-                    Icons.abc,
-                    color: Colors.grey,
-                  ),
+                  fillColor: Colors.white
                 ),
                 onChanged: viewModel.setSelectedVehicles,
                 selectedValues: viewModel.selectedVehicles,

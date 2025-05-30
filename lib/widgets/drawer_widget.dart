@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/extensions/widget.extension.dart';
 import 'package:smart_tracking/widgets/header_drawer_widget.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
-import 'package:smart_tracking/utils/app_component.dart';
-
-import 'package:smart_tracking/routes.dart';
 
 class DrawerWidget extends StatefulWidget {
   final Function(String) onTap;
