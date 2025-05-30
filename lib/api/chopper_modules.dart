@@ -3,8 +3,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:smart_tracking/api/base_chopper_module.dart';
-import 'package:smart_tracking/api/request_json_error_converter.dart';
-
 import 'package:smart_tracking/utils/enviroments.dart';
 
 @module

@@ -1,8 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-
 import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 

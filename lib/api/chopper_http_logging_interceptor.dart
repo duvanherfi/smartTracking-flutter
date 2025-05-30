@@ -2,9 +2,10 @@
 
 import 'dart:async';
 import 'dart:developer';
-import 'package:meta/meta.dart';
+
 import 'package:chopper/chopper.dart';
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 
 @immutable
 class CustomHttpLoggingInterceptor implements HttpLoggingInterceptor {

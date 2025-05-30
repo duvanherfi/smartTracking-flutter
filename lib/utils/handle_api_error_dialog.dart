@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:get_it/get_it.dart';
-import 'package:smart_tracking/utils/shared_preferences_v2.dart';
-import 'package:smart_tracking/utils/app_component.dart';
 
 import 'package:smart_tracking/api/api_exception.dart';
 import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 
 import 'extensions/dialog.extension.dart';
 

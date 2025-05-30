@@ -53,11 +53,13 @@ class Vehicle {
   @JsonKey(name: "user_id")
   String? userId;
   @JsonKey(name: "average_speed")
-  String? averageSpeed;
+  double? averageSpeed;
   @JsonKey(name: "max_speed")
-  String? maxSpeed;
+  double? maxSpeed;
   @JsonKey(name: "label_direction")
   String? labelDirection;
+  @JsonKey(name: "hours")
+  double? hours;
 
   Vehicle({
     required this.id,
@@ -87,6 +89,7 @@ class Vehicle {
     this.averageSpeed,
     this.maxSpeed,
     this.labelDirection,
+    this.hours
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);

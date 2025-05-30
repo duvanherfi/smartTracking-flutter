@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 import 'dart:core';
-
-import 'package:flutter/material.dart';
 RegExp firstLineregex = RegExp(
     r"([A|C|I][A-Z0-9<]{1})([A-Z]{3})([A-Z0-9<]{9})([0-9]{1})([A-Z0-9<]{15})");
 

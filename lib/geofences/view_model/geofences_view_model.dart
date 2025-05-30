@@ -3,22 +3,20 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_dragmarker/flutter_map_dragmarker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:smart_tracking/api/api_exception.dart';
+import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/model/area_geojson.dart';
 import 'package:smart_tracking/api/model/centroid_geojson.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
+import 'package:smart_tracking/base/repository/vehicle_repository.dart';
 import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart';
 import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/services/home_services.dart';
 import 'package:smart_tracking/utils/app_base_view_model.dart';
 import 'package:smart_tracking/utils/app_component.dart';
-import 'package:smart_tracking/base/repository/vehicle_repository.dart';
-import 'package:smart_tracking/api/api_exception.dart';
-import 'package:smart_tracking/api/api_result.dart';
-import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
-
 import 'package:smart_tracking/utils/extensions/dialog.extension.dart';
-
-import 'package:smart_tracking/services/home_services.dart';
+import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
 import 'package:stacked/stacked.dart';
 
 

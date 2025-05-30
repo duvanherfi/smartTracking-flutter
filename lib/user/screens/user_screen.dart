@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:stacked/stacked.dart';
+import 'package:smart_tracking/user/view_model/user_view_model.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/widgets/splash_widget.dart';
-import 'package:smart_tracking/user/view_model/user_view_model.dart';
+import 'package:stacked/stacked.dart';
 
 class UserScreen extends StackedView<UserViewModel> {
   const UserScreen({super.key});

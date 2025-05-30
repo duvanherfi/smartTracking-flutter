@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:smart_tracking/api/model/session.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
+
 part 'session_datasource.chopper.dart';
 
 @ChopperApi(baseUrl: "/sessions")

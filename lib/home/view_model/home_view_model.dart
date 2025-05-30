@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/services/home_services.dart';
@@ -31,19 +29,6 @@ class HomeViewModel extends AppBaseViewModel {
 
   void _init(BuildContext context) async {
     validateSession();
-  }
-
-
-  Future onDrawerItemTap(String id) async {
-    var event = 'home';
-    switch (id) {
-      case 'home':
-        appNavigator.popUntil((route) => route.isFirst);
-        break;
-      case 'user':
-        appNavigator.push(Routes.user);
-        break;
-    }
   }
 
   @override

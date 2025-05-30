@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/style/dialog.style.dart';
 

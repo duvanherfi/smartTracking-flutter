@@ -2,9 +2,9 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:smart_tracking/utils/extensions/string_extensions.dart';
+
 import 'package:chopper/chopper.dart';
+import 'package:smart_tracking/utils/extensions/string_extensions.dart';
 
 class RequestJsonConverter implements Converter {
   final Map<Type, Function>? typeToJsonFactoryMap;

@@ -3,7 +3,8 @@ import 'package:smart_tracking/home/screens/home_screen.dart';
 import 'package:smart_tracking/login/screens/login_screen.dart';
 import 'package:smart_tracking/remember_password/screen/remember_password.dart';
 import 'package:smart_tracking/user/screens/user_screen.dart';
-import 'geofences/widgets/add_geo_fence_widget.dart';
+
+import 'geofences/screen/add_geo_fence_widget.dart';
 
 class Routes {
   static const String login = '/login';
