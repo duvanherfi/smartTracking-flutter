@@ -357,4 +357,107 @@ class BaseScreenViewModel extends AppBaseViewModel {
       ),
     );
   }
+
+  void launchStreetView() async {
+    // Construye la URL para Google Street View
+    final coords = getVehicleCoordinates();
+    final Uri streetViewUrl = Uri.parse(
+        'google.streetview:cbll=${coords.latitude},${coords.longitude}&layer=c'
+    );
+
+    // Construye una URL de respaldo para el navegador web
+    final Uri webUrl = Uri.parse(
+        'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${coords.latitude},${coords.longitude}'
+    );
+
+    try {
+      // Intenta lanzar la URL nativa de Street View
+      if (await canLaunchUrl(streetViewUrl)) {
+        await launchUrl(streetViewUrl);
+      }
+      // Si falla, intenta abrir en el navegador
+      else if (await canLaunchUrl(webUrl)) {
+        await launchUrl(webUrl, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'No se pudo lanzar ninguna URL';
+      }
+    } catch (e) {
+      // Maneja cualquier excepción que pueda ocurrir
+      print('Error al lanzar Street View: $e');
+      // Aquí podrías mostrar un SnackBar o un diálogo de alerta al usuario
+    }
+  }
+
+  void sendComand(String type){
+
+    String command = type == "off" ? "Apagar" : "Encender";
+    showDialog(
+      context: scaffoldKey.currentState!.context,
+      builder: (_) => AlertDialog(
+        title: const Text(
+          "Atención",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Color(0xFF6c18db),
+              fontSize: 25
+          ),
+        ),
+
+        content: SizedBox(
+          height: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              type == "off" ? const Text(
+                "IMPORTANTE: ESTE COMANDO SOLO DEBE SER USADO EN CASO DE HURTO",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Color(0xFF6c18db),
+                    fontSize: 25
+                ),
+              ) : SizedBox.shrink(),
+              Text(
+                "¿Desea ejecutar el comando: $command motor?",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20
+                ),
+              ),
+            ],
+          ),
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          MaterialButton(
+            onPressed: () => appNavigator.back(),
+            child: const Text("Cancelar", style: TextStyle(fontSize: 20, color: Colors.grey)),
+          ),
+          MaterialButton(
+            onPressed: () {
+              appNavigator.back();
+              viewModelLoading = true;
+              notifyListeners();
+
+              viewModelLoading = false;
+              notifyListeners();
+              // _homeServices.sendCommand(type).then((response) {
+              //   if (response.status == Status.COMPLETED) {
+                  showPiDialog("Comando enviado correctamente");
+              //   } else {
+              //     throw response.apiException as ApiException;
+              //   }
+              // }).catchError((error) {
+              //   showPiDialog(error);
+              // }).whenComplete(() {
+              //   viewModelLoading = false;
+              //   notifyListeners();
+              // });
+            },
+            child: const Text("Aceptar", style: TextStyle(fontSize: 20, color: Color(0xFF6c18db))),
+          ),
+        ],
+      ),
+    );
+  }
 }

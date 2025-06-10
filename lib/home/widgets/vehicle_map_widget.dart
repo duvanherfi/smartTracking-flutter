@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
 import 'package:smart_tracking/home/widgets/status_card.dart';
+import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/widgets/content_oval.dart';
 import 'package:stacked/stacked.dart';
@@ -24,20 +25,6 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
                 options: MapOptions(
                   initialCenter: viewModel.getVehicleCoordinates(),
                   initialZoom: 14.0,
-                  onTap: (tapPosition, point) {
-                    switch (viewModel.mode) {
-                      case GeofenceMode.recommended:
-                        break;
-                      case GeofenceMode.free:
-                        viewModel.addFreePoint(point);
-                        break;
-                      case GeofenceMode.circle:
-                        viewModel.updateCenterCircle(point);
-                        break;
-                      default:
-                        break;
-                    }
-                  },
                 ),
                 children: [
                   TileLayer(
@@ -64,17 +51,17 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
                 child: ContentOval(
                     width: 80,
                     height: 80,
-                    child: IconButton(
-                        onPressed: (){},
-                        icon: Icon(
-                          Icons.streetview, size: 25,
-                          color: Colors.white,
-                        )
-                    ),
                   firtsBorderColor: Color(0xFF6c18db),
                   secondBorderColor: Colors.white,
                   secondBorderWidth: 5,
                   backgroudnColor: Color(0xFF1942DB),
+                    child: IconButton(
+                        onPressed: viewModel.launchStreetView,
+                        icon: const Icon(
+                          Icons.streetview, size: 25,
+                          color: Colors.white,
+                        )
+                    ),
                 )
             ),
             Positioned(
@@ -83,17 +70,19 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
                 child: ContentOval(
                   width: 80,
                   height: 80,
-                  child: IconButton(
-                      onPressed: (){},
-                      icon: Icon(
-                        Icons.play_arrow_rounded, size: 25,
-                        color: Colors.white,
-                      )
-                  ),
                   firtsBorderColor: Color(0xFF6c18db),
                   secondBorderColor: Colors.white,
                   secondBorderWidth: 5,
                   backgroudnColor: Color(0xFF1942DB),
+                  child: IconButton(
+                      onPressed: (){
+                        viewModel.sendComand("off");
+                      },
+                      icon: const Icon(
+                        Icons.play_arrow_rounded, size: 25,
+                        color: Colors.white,
+                      )
+                  ),
                 )
             ),
             Positioned(
@@ -102,17 +91,19 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
                 child: ContentOval(
                   width: 80,
                   height: 80,
-                  child: IconButton(
-                      onPressed: (){},
-                      icon: Icon(
-                        Icons.stop, size: 25,
-                        color: Colors.white,
-                      )
-                  ),
                   firtsBorderColor: Color(0xFF6c18db),
                   secondBorderColor: Colors.white,
                   secondBorderWidth: 5,
                   backgroudnColor: Color(0xFF1942DB),
+                  child: IconButton(
+                      onPressed: (){
+                        viewModel.sendComand("on");
+                      },
+                      icon: const Icon(
+                        Icons.stop, size: 25,
+                        color: Colors.white,
+                      )
+                  ),
                 )
             ),
             Positioned(
@@ -121,17 +112,19 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
                 child: ContentOval(
                   width: 80,
                   height: 80,
-                  child: IconButton(
-                      onPressed: (){},
-                      icon: Icon(
-                        Icons.share, size: 25,
-                        color: Colors.white,
-                      )
-                  ),
                   firtsBorderColor: Color(0xFF6c18db),
                   secondBorderColor: Colors.white,
                   secondBorderWidth: 5,
                   backgroudnColor: Color(0xFF1942DB),
+                  child: IconButton(
+                      onPressed: (){
+                        appNavigator.push(Routes.share);
+                      },
+                      icon: const Icon(
+                        Icons.share, size: 25,
+                        color: Colors.white,
+                      )
+                  ),
                 )
             ),
           ],

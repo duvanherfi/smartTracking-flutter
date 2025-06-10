@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
+import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/widgets/content_oval.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -346,7 +348,9 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
               width: 80,
               height: 80,
               child: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    viewModel.sendComand("off");
+                  },
                   icon: Icon(
                     Icons.stop, size: 25,
                     color: Colors.white,
@@ -363,7 +367,9 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
                   width: 80,
                   height: 80,
                   child: IconButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        viewModel.sendComand("on");
+                      },
                       icon: Icon(
                         Icons.play_arrow, size: 25,
                         color: Colors.white,
@@ -382,17 +388,19 @@ class HomeWidget extends ViewModelWidget<BaseScreenViewModel> {
             ContentOval(
               width: 80,
               height: 80,
-              child: IconButton(
-                  onPressed: (){},
-                  icon: Icon(
-                    Icons.share, size: 25,
-                    color: Colors.white,
-                  )
-              ),
               firtsBorderColor: Color(0xFF6c18db),
               secondBorderColor: Colors.white,
               secondBorderWidth: 5,
               backgroudnColor: Color(0xFF1942DB),
+              child: IconButton(
+                  onPressed: (){
+                    appNavigator.push(Routes.share);
+                  },
+                  icon: const Icon(
+                    Icons.share, size: 25,
+                    color: Colors.white,
+                  )
+              ),
             )
           ],
         ),

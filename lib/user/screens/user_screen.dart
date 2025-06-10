@@ -13,12 +13,12 @@ class UserScreen extends StackedView<UserViewModel> {
   Widget builder(BuildContext context, UserViewModel viewModel, Widget? child) =>
       (viewModel.loading)
       ? const SplashWidget()
-      : loginWidget(context, viewModel);
+      : userWidget(context, viewModel);
 
   @override
   UserViewModel viewModelBuilder(BuildContext context) => UserViewModel();
 
-  Widget loginWidget(BuildContext context, UserViewModel viewModel) {
+  Widget userWidget(BuildContext context, UserViewModel viewModel) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
