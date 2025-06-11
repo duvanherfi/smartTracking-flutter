@@ -61,6 +61,8 @@ dependencies:
   flutter_map_dragmarker: ^8.0.3
   firebase_core: ^3.13.1
   firebase_messaging: ^15.2.6
+  map_launcher: ^3.5.0
+  flutter_svg: ^2.1.0
 
 
 dev_dependencies:

@@ -67,12 +67,18 @@ Future<void> setUpRemoteConfig() async {
 }
 
 Future<void> generatePushToken() async {
-  final firebaseMessaging = FirebaseMessaging.instance;
   String? token;
-  if (Platform.isIOS) {
-    token = await firebaseMessaging.getAPNSToken() ?? '';
-  } else if (Platform.isAndroid) {
-    token = await firebaseMessaging.getToken();
+  try {
+    final firebaseMessaging = FirebaseMessaging.instance;
+
+    if (Platform.isIOS) {
+      token = await firebaseMessaging.getAPNSToken() ?? '';
+    } else if (Platform.isAndroid) {
+      token = await firebaseMessaging.getToken();
+    }
+  } catch(e) {
+    print('Error generating push token: $e');
+    token = '';
   }
 
 

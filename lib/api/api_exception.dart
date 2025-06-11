@@ -113,14 +113,17 @@ class UnAuthorizedAccessException<T> extends ApiException<T> {
   UnAuthorizedAccessException([this.error]);
 }
 
-
-
 class ApiErrorSeveralSessions<T> extends ApiException<T> {
   final String? error;
 
   ApiErrorSeveralSessions([this.error]);
 }
 
+class SocketException<T> extends ApiException<T> {
+  final String? error;
+
+  SocketException([this.error]);
+}
 
 class ApiErrorNoOtpCode<T> extends ApiException<T> {
   final String? message;
