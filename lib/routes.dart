@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smart_tracking/notifications/screens/notifications_screen.dart';
 import 'package:smart_tracking/home/screens/home_screen.dart';
 import 'package:smart_tracking/login/screens/login_screen.dart';
 import 'package:smart_tracking/remember_password/screen/remember_password.dart';
 import 'package:smart_tracking/share/screens/share_screen.dart';
 import 'package:smart_tracking/user/screens/user_screen.dart';
-
-import 'geofences/screen/add_geo_fence_widget.dart';
+import 'package:smart_tracking/geofences/screen/add_geo_fence_widget.dart';
 
 class Routes {
   static const String login = '/login';
@@ -13,7 +13,7 @@ class Routes {
   static const String user = '/user';
   static const String history = '/history';
   static const String rememberPassword = '/remember_password';
-  static const String alerts = '/alerts';
+  static const String notificationScreen = '/notifications';
   static const String addGeoFence = '/add_geofence';
   static const String share = '/share';
 
@@ -24,6 +24,6 @@ class Routes {
     addGeoFence: (context) => const AddGeofenceScreen(),
     rememberPassword: (context) => RemeberPasswordScreen(),
     share: (context) => const ShareScreen(),
-    alerts: (context) => const Placeholder(),
+    notificationScreen: (context) => const NotificationScreen(),
   };
 }

@@ -64,7 +64,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       _builderItemDrawer(
           "Configuración de alertas",
           const Icon(Icons.warning, color: Color(0xFF6C18DB), size: 50),
-          'alerts'
+          'notifications'
       ),
     );
 

@@ -9,6 +9,7 @@ import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/mssg_response.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
+import 'package:smart_tracking/api/model/config_notification.dart';
 import 'package:smart_tracking/api/request_json_converter.dart';
 
 import 'model/area_geojson.dart';
@@ -39,6 +40,7 @@ final RequestJsonConverter converters = RequestJsonConverter(
     CentroidGeojson: CentroidGeojson.fromJson,
     User: User.fromJson,
     MssgResponse: MssgResponse.fromJson,
+    ConfigNotification: ConfigNotification.fromJson,
   },
 );
 
