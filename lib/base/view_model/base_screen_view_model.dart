@@ -180,8 +180,8 @@ class BaseScreenViewModel extends AppBaseViewModel {
       case 'politics':
         launchUrl(Uri.tryParse(Environments.baseUrl.replaceAll("api/v1/", "")+"legal")!);
         break;
-      case 'alerts':
-        appNavigator.push(Routes.alerts);
+      case 'notifications':
+        appNavigator.push(Routes.notificationScreen);
         break;
       default:
         appNavigator.back();
