@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/base/view_model/base_screen_view_model.dart';
+import 'package:smart_tracking/home/widgets/history_widget.dart';
 import 'package:smart_tracking/utils/disable_glow_scroll.dart';
 import 'package:smart_tracking/widgets/drawer_widget.dart';
 import 'package:smart_tracking/widgets/loading.dart';
@@ -29,10 +30,6 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
   bool showErrorBody;
   Widget? errorBody;
 
-  ///Conditonal Rendering: If 'isLoadingWithoutOverlap = true' it will show the loading widget
-  ///but not the main widget (without overlapping the main widget).
-  bool isLoadingWithoutOverlap;
-
   BaseScreen({
     super.key,
     this.body,
@@ -49,7 +46,6 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
     this.systemNavigationBarColor,
     this.topSafeArea = true,
     this.showConectivity = true,
-    this.isLoadingWithoutOverlap = false,
     this.onScrollStatusBarColor,
     this.showErrorBody = false,
     this.errorBody,
@@ -145,12 +141,7 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                       alignment: Alignment.centerLeft,
                       children: [
                         disableGlow(
-                          isLoadingWithoutOverlap
-                              ? Loading(
-                            progress: progress,
-                            backgroundColor: Colors.grey.withOpacity(0.2),
-                          )
-                              : Container(
+                          Container(
                             width: size.width,
                             height: size.height,
                             padding: const EdgeInsets.only(

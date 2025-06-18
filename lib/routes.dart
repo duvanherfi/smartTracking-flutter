@@ -6,6 +6,7 @@ import 'package:smart_tracking/remember_password/screen/remember_password.dart';
 import 'package:smart_tracking/share/screens/share_screen.dart';
 import 'package:smart_tracking/user/screens/user_screen.dart';
 import 'package:smart_tracking/geofences/screen/add_geo_fence_widget.dart';
+import 'package:smart_tracking/user_notifications/screens/user_notification_screen.dart';
 
 class Routes {
   static const String login = '/login';
@@ -14,6 +15,7 @@ class Routes {
   static const String history = '/history';
   static const String rememberPassword = '/remember_password';
   static const String notificationScreen = '/notifications';
+  static const String userNotificationScreen = '/user_notifications';
   static const String addGeoFence = '/add_geofence';
   static const String share = '/share';
 
@@ -24,6 +26,6 @@ class Routes {
     addGeoFence: (context) => const AddGeofenceScreen(),
     rememberPassword: (context) => RemeberPasswordScreen(),
     share: (context) => const ShareScreen(),
-    notificationScreen: (context) => const NotificationScreen(),
+    userNotificationScreen: (context) => const UserNotificationScreen(),
   };
 }

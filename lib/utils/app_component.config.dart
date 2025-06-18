@@ -21,6 +21,8 @@ import 'package:smart_tracking/api/datasources/notification_datasource.dart'
 import 'package:smart_tracking/api/datasources/session_datasource.dart'
     as _i1055;
 import 'package:smart_tracking/api/datasources/user_datasource.dart' as _i907;
+import 'package:smart_tracking/api/datasources/user_notification_datasource.dart'
+    as _i358;
 import 'package:smart_tracking/api/datasources/vehicle_datasource.dart'
     as _i810;
 import 'package:smart_tracking/api/provider_api_module.dart' as _i901;
@@ -34,6 +36,8 @@ import 'package:smart_tracking/notifications/repository/notifications_repository
 import 'package:smart_tracking/services/home_services.dart' as _i388;
 import 'package:smart_tracking/user/repository/session_repository.dart' as _i4;
 import 'package:smart_tracking/user/repository/user_repository.dart' as _i722;
+import 'package:smart_tracking/user_notifications/repository/user_notification_repository.dart'
+    as _i128;
 import 'package:smart_tracking/utils/app_navigator.dart' as _i405;
 import 'package:smart_tracking/utils/helper_module.dart' as _i891;
 import 'package:smart_tracking/utils/shared_preferences_v2.dart' as _i33;
@@ -77,6 +81,8 @@ extension GetItInjectableX on _i174.GetIt {
         providerApiModule.provideSessionDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i19.NotificationDataSource>(() => providerApiModule
         .provideNotificationDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i358.UserNotificationDataSource>(() => providerApiModule
+        .provideUserNotificationDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i603.NotificationsRepository>(() =>
         _i603.NotificationsRepository.from(gh<_i19.NotificationDataSource>()));
     gh.factory<_i4.SessionRepository>(
@@ -89,6 +95,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i722.UserRepository.from(gh<_i907.UserDataSource>()));
     gh.factory<_i416.GeoFenceRepository>(
         () => _i416.GeoFenceRepository.from(gh<_i1063.GeoFenceDataSource>()));
+    gh.factory<_i128.UserNotificationRepository>(() =>
+        _i128.UserNotificationRepository.from(
+            gh<_i358.UserNotificationDataSource>()));
     return this;
   }
 }

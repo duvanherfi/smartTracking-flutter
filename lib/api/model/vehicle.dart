@@ -5,7 +5,7 @@ part 'vehicle.g.dart';
 @JsonSerializable(includeIfNull: false)
 class Vehicle {
   @JsonKey(name: "_id")
-  String? id;
+  String id;
   @JsonKey(name: "battery_level")
   String? batteryLevel;
   @JsonKey(name: "blocked")
