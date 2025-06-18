@@ -65,13 +65,12 @@ class BaseScreenViewModel extends AppBaseViewModel {
     appLifeCycle();
     _init(context);
     notificationsButton = IconButton(
-        icon: const Badge(
-            padding: EdgeInsets.all(0),
-            label: Text('3'),
-            child: Icon(Icons.notifications,
-                color: Colors.white, size: 45)),
+        icon: const Icon(
+            Icons.notifications,
+            color: Colors.white, size: 45
+        ),
         onPressed: () {
-          showPiDialog("Disponible pronto");
+          appNavigator.push(Routes.userNotificationScreen);
         }
     );
     addGeoFenceButton = IconButton(
@@ -162,8 +161,9 @@ class BaseScreenViewModel extends AppBaseViewModel {
     notifyListeners();
   }
 
-  void onVehicleTap(id) {
-    vehicleId = id;
+  void onVehicleTap(vehicle) {
+    vehicleId = vehicle.id;
+    _homeServices.vehicle.value = vehicle;
     notifyListeners();
   }
 

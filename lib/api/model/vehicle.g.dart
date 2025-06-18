@@ -7,7 +7,7 @@ part of 'vehicle.dart';
 // **************************************************************************
 
 Vehicle _$VehicleFromJson(Map<String, dynamic> json) => Vehicle(
-      id: json['_id'] as String?,
+      id: json['_id'] as String,
       batteryLevel: json['battery_level'] as String?,
       blocked: json['blocked'] as bool?,
       category: json['category'] as String?,
@@ -46,7 +46,7 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) => Vehicle(
     );
 
 Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{
-      if (instance.id case final value?) '_id': value,
+      '_id': instance.id,
       if (instance.batteryLevel case final value?) 'battery_level': value,
       if (instance.blocked case final value?) 'blocked': value,
       if (instance.category case final value?) 'category': value,
