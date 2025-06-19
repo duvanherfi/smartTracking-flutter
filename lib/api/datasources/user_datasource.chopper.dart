@@ -44,4 +44,17 @@ final class _$UserDataSource extends UserDataSource {
     );
     return client.send<SessionResponse, SessionResponse>($request);
   }
+
+  @override
+  Future<Response<MssgResponse>> recoveryPassword(Map<String, dynamic> body) {
+    final Uri $url = Uri.parse('/users/recovery_password');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<MssgResponse, MssgResponse>($request);
+  }
 }

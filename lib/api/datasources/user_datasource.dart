@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:smart_tracking/api/model/mssg_response.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
 import 'package:smart_tracking/api/model/user.dart';
 
@@ -14,6 +15,11 @@ abstract class UserDataSource extends ChopperService {
   Future<Response<SessionResponse>> updateUser(
       @Path("id") String id,
       @Body()  User user,
+  );
+
+  @POST(path: "recovery_password")
+  Future<Response<MssgResponse>> recoveryPassword(
+      @Body()  Map<String, dynamic> body,
   );
 
   static _$UserDataSource create([ChopperClient? client]) =>
