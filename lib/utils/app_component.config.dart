@@ -18,6 +18,7 @@ import 'package:smart_tracking/api/datasources/geo_fence_datasource.dart'
 import 'package:smart_tracking/api/datasources/login_datasource.dart' as _i805;
 import 'package:smart_tracking/api/datasources/notification_datasource.dart'
     as _i19;
+import 'package:smart_tracking/api/datasources/report_datasource.dart' as _i906;
 import 'package:smart_tracking/api/datasources/session_datasource.dart'
     as _i1055;
 import 'package:smart_tracking/api/datasources/user_datasource.dart' as _i907;
@@ -30,6 +31,7 @@ import 'package:smart_tracking/base/repository/vehicle_repository.dart'
     as _i1051;
 import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart'
     as _i416;
+import 'package:smart_tracking/home/repository/report_repository.dart' as _i623;
 import 'package:smart_tracking/login/repository/login_repository.dart' as _i956;
 import 'package:smart_tracking/notifications/repository/notifications_repository.dart'
     as _i603;
@@ -83,12 +85,16 @@ extension GetItInjectableX on _i174.GetIt {
         .provideNotificationDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i358.UserNotificationDataSource>(() => providerApiModule
         .provideUserNotificationDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i906.ReportDataSource>(() =>
+        providerApiModule.provideReportDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i603.NotificationsRepository>(() =>
         _i603.NotificationsRepository.from(gh<_i19.NotificationDataSource>()));
     gh.factory<_i4.SessionRepository>(
         () => _i4.SessionRepository.from(gh<_i1055.SessionDataSource>()));
     gh.factory<_i956.LoginRepository>(
         () => _i956.LoginRepository.from(gh<_i805.LoginDataSource>()));
+    gh.factory<_i623.ReportRepository>(
+        () => _i623.ReportRepository.from(gh<_i906.ReportDataSource>()));
     gh.factory<_i1051.VehicleRepository>(
         () => _i1051.VehicleRepository.from(gh<_i810.VehicleDataSource>()));
     gh.factory<_i722.UserRepository>(

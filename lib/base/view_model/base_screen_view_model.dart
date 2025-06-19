@@ -2,12 +2,17 @@ import 'dart:async';
 
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smart_tracking/api/api_exception.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
+import 'package:smart_tracking/api/model/trip.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart';
+import 'package:smart_tracking/home/repository/report_repository.dart';
 import 'package:smart_tracking/home/widgets/geofence_widget.dart';
 import 'package:smart_tracking/home/widgets/history_widget.dart';
 import 'package:smart_tracking/home/widgets/home_widget.dart';
@@ -18,6 +23,7 @@ import 'package:smart_tracking/utils/app_base_view_model.dart';
 import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/enviroments.dart';
 import 'package:smart_tracking/utils/extensions/dialog.extension.dart';
+import 'package:smart_tracking/utils/handle_api_error_dialog.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,24 +33,31 @@ class BaseScreenViewModel extends AppBaseViewModel {
   final GlobalKey mapKey = GlobalKey();
   final _homeServices = locator<HomeServices>();
   final _geoFenceRepository = locator<GeoFenceRepository>();
+  final _reportRepository = locator<ReportRepository>();
   static const List<Widget> widgetOptions = <Widget>[
     HistoryWidget(),
     GeofenceWidget(),
     HomeWidget(),
     VehicleMapWidget(),
   ];
+  final DateFormat format = DateFormat('yyyy-MM-ddTHH:mm:ssZ');
+  DateTime? fromDate;
+  DateTime? toDate;
+  List<DateTime> radioDates = [];
   bool viewModelLoading = false;
   bool isCharging = false;
   int currentIndex = 2;
   AppLifecycleListener? _listener;
   IconButton? notificationsButton;
   IconButton? addGeoFenceButton;
+  IconButton? filterButton;
   bool addGeoFence = false;
   GeofenceMode? mode;
   double geofenceRadius = 300;
   LatLng centerCircle = const LatLng(0, 0);
   late IconButton selectedButton;
   List<LatLng> freePolygon = [];
+  List<Trip> trips = [];
   late Widget childBase = widgetOptions[2];
 
   bool get loading => viewModelLoading || _homeServices.loadingReactiveValue.value;
@@ -82,6 +95,12 @@ class BaseScreenViewModel extends AppBaseViewModel {
         notifyListeners();
         appNavigator.push(Routes.addGeoFence);
       },
+    );
+    filterButton = IconButton(
+      icon: const Icon(
+          Icons.filter_alt_outlined,
+          color: Colors.white, size: 45
+      ), onPressed: openFilter,
     );
     selectedButton = notificationsButton!;
     childBase = widgetOptions[2];
@@ -239,8 +258,9 @@ class BaseScreenViewModel extends AppBaseViewModel {
     switch (id) {
       case 0:
         currentIndex = id;
-        selectedButton = notificationsButton!;
+        selectedButton = filterButton!;
         notifyListeners();
+        getTravels();
         break;
       case 1:
         currentIndex = id;
@@ -457,6 +477,296 @@ class BaseScreenViewModel extends AppBaseViewModel {
             child: const Text("Aceptar", style: TextStyle(fontSize: 20, color: Color(0xFF6c18db))),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<dynamic> getTravels() async {
+    String from = format.format(fromDate ?? DateTime.now().subtract(const Duration(days: 7))) + "Z";
+    String to =  format.format(toDate ?? DateTime.now()) + "Z";
+    viewModelLoading = true;
+    notifyListeners();
+    await _reportRepository.getTravels(
+        vehicleId ?? "",
+        from,
+        to,
+    ).then((response) async {
+      if (response.status == Status.COMPLETED) {
+        trips = response.data as List<Trip>;
+      } else {
+        throw response.apiException as ApiException;
+      }
+    }).catchError((error) {
+      viewModelLoading = false;
+      handleApiErrorDialog(error);
+      notifyListeners();
+    }).whenComplete((){
+      viewModelLoading = false;
+      notifyListeners();
+    });
+  }
+
+  Future<dynamic> openFilter() {
+    final context = scaffoldKey.currentContext!;
+    final size = MediaQuery.of(context).size;
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => AlertDialog(
+        actions: [
+          MaterialButton(
+              onPressed: (){
+                appNavigator.back();
+                getTravels();
+              },
+              child: Text(
+                  "Aplicar",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20
+                  )
+              )
+          )
+        ],
+        content: SizedBox(
+          height: size.height * 0.7,
+          width: size.width * 0.9,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Text("Rangoo de fechas"),
+                    FormBuilder(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormBuilderRadioGroup(
+                                    name: "rangos",
+                                    options: [
+                                      FormBuilderFieldOption(
+                                          value: [
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            ),
+                                            DateTime.now()
+                                          ], child: Text("Hoy")
+                                      ),
+                                      FormBuilderFieldOption(
+                                          value: [
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    days: const Duration(days: 1).inDays,
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            ),
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            )
+                                          ],
+                                          child: Text("Ayer")
+                                      ),
+                                      FormBuilderFieldOption(
+                                          value: [
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    days: const Duration(days: 7).inDays,
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            ),
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            )
+                                          ],
+                                          child: Text("Ultimos 7 días")
+                                      ),
+                                      FormBuilderFieldOption(
+                                          value: [
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    days: const Duration(days: 30).inDays,
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            ),
+                                            DateTime.now().subtract(
+                                                Duration(
+                                                    hours: DateTime.now().hour,
+                                                    minutes: DateTime.now().minute,
+                                                    seconds: DateTime.now().second,
+                                                    milliseconds: DateTime.now().millisecond
+                                                )
+                                            )
+                                          ],
+                                          child: Text("Ultimos 30 días")
+                                      ),
+                                    ],
+                                    onChanged: (value){
+                                      radioDates = value!;
+                                      fromDate = value.first;
+                                      toDate = value.last;
+                                    },
+                                  initialValue: radioDates,
+                                ),
+                              ),
+                            ]
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FormBuilderDateRangePicker(
+                                  name: 'dates',
+                                  firstDate: DateTime(0),
+                                  lastDate:  DateTime.now(),
+                                  decoration: const InputDecoration(
+                                      icon: Icon(Icons.calendar_month)
+                                  ),
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      fromDate = value.start;
+                                      toDate = value.end;
+                                      radioDates = [];
+                                    }
+                                  },
+
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<LatLng> getPositionsFromTrips(Trip trip) {
+    if (trip.positions == null || trip.positions!.isEmpty) {
+      return [];
+    }
+    return trip.positions!.map((position) => position.point()).toList();
+  }
+
+  Widget getTripMap(Trip trip, bool inactiveFlags) {
+
+    return FlutterMap(
+      options: MapOptions(
+        interactionOptions: InteractionOptions(
+            flags: inactiveFlags ? InteractiveFlag.none : InteractiveFlag.all
+        ),
+        initialCenter: trip.centerPoint(),
+        initialZoom: 12,
+      ),
+      children: [
+        TileLayer(
+          // Bring your own tiles
+          urlTemplate:
+          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          // For demonstration only
+          userAgentPackageName: 'com.smart.tracking.smart_tracking', // Add your app identifier
+          // And many more recommended properties!
+        ),
+        RichAttributionWidget(
+          // Include a stylish prebuilt attribution widget that meets all requirments
+          attributions: [
+            TextSourceAttribution(
+              'OpenStreetMap contributors',
+              onTap: () => launchUrl(Uri.parse(
+                  'https://openstreetmap.org/copyright')), // (external)
+            ),
+            // Also add images...
+          ],
+        ),
+        MarkerLayer(
+            markers: [
+              Marker(
+                  point: trip.startPoint(),
+                  child: const Icon(
+                      Icons.location_on,
+                      size: 50,
+                      color: Colors.red
+                  )
+              ),
+              Marker(
+                  point: trip.endPoint(),
+                  child: const Icon(
+                      Icons.flag,
+                      size: 50,
+                      color: Colors.lightBlueAccent
+                  )
+              ),
+            ]
+        ),
+        PolylineLayer(
+          polylines: [
+            Polyline(
+              points: getPositionsFromTrips(trip),
+              color: Colors.blue,
+              strokeWidth: 4.0,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Future<dynamic> userNotificationAction(BuildContext context, Trip trip) {
+    final size = MediaQuery.of(context).size;
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => AlertDialog(
+        actions: [
+          MaterialButton(
+              onPressed: ()=> appNavigator.back(),
+              child: Text(
+                  "Cerrar",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20
+                  )
+              )
+          )
+        ],
+        content: SizedBox(
+          width: size.width * 0.95,
+          height: size.height * 0.9,
+          child: getTripMap(trip, false),
+        ),
       ),
     );
   }
