@@ -33,6 +33,11 @@ FutureOr<dynamic> handleApiErrorDialog(
         exception.error!,
         onAcceptEvent: (_) => click?.call(),
       );
+    } else if (exception is ApiErrorWithCode) {
+      showPiDialog(
+        exception.error!,
+        onAcceptEvent: (_) => click?.call(),
+      );
     } else {
       showPiDialog(
         exception.toString(),

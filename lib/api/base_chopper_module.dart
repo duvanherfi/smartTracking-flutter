@@ -7,15 +7,17 @@ import 'package:smart_tracking/api/chopper_request_interceptor.dart';
 import 'package:smart_tracking/api/model/centroid_geojson.dart';
 import 'package:smart_tracking/api/model/geo_fence.dart';
 import 'package:smart_tracking/api/model/mssg_response.dart';
+import 'package:smart_tracking/api/model/position_server.dart';
 import 'package:smart_tracking/api/model/session_response.dart';
+import 'package:smart_tracking/api/model/trip.dart';
 import 'package:smart_tracking/api/model/user_notification.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
 import 'package:smart_tracking/api/model/config_notification.dart';
 import 'package:smart_tracking/api/request_json_converter.dart';
 
-import 'model/area_geojson.dart';
-import 'model/session.dart';
-import 'model/user.dart';
+import 'package:smart_tracking/api/model/area_geojson.dart';
+import 'package:smart_tracking/api/model/session.dart';
+import 'package:smart_tracking/api/model/user.dart';
 
 
 class BaseChopperModule {
@@ -43,6 +45,8 @@ final RequestJsonConverter converters = RequestJsonConverter(
     MssgResponse: MssgResponse.fromJson,
     ConfigNotification: ConfigNotification.fromJson,
     UserNotification: UserNotification.fromJson,
+    Trip: Trip.fromJson,
+    PositionServer: PositionServer.fromJson,
   },
 );
 
