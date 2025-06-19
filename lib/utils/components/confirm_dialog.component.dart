@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_tracking/utils/app_component.dart';
-import 'package:smart_tracking/utils/components/html_text.component.dart';
 import 'package:smart_tracking/utils/build_context.extension.dart';
+import 'package:smart_tracking/utils/components/html_text.component.dart';
 import 'package:smart_tracking/utils/extensions/strings.extensions.dart';
 import 'package:smart_tracking/utils/extensions/texts.extension.dart';
 import 'package:smart_tracking/utils/extensions/widget.extension.dart';

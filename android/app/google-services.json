@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "447013867772",
+    "project_id": "smartracking-37ccf",
+    "storage_bucket": "smartracking-37ccf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447013867772:android:7c793cf9ef3d3ef1ce4779",
+        "android_client_info": {
+          "package_name": "com.smart.tracking.smart_tracking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAae3nky-9xaRVcHUE-VAhozsPPTCjt0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

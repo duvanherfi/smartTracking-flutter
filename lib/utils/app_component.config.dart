@@ -16,6 +16,14 @@ import 'package:smart_tracking/api/chopper_modules.dart' as _i821;
 import 'package:smart_tracking/api/datasources/geo_fence_datasource.dart'
     as _i1063;
 import 'package:smart_tracking/api/datasources/login_datasource.dart' as _i805;
+import 'package:smart_tracking/api/datasources/notification_datasource.dart'
+    as _i19;
+import 'package:smart_tracking/api/datasources/report_datasource.dart' as _i906;
+import 'package:smart_tracking/api/datasources/session_datasource.dart'
+    as _i1055;
+import 'package:smart_tracking/api/datasources/user_datasource.dart' as _i907;
+import 'package:smart_tracking/api/datasources/user_notification_datasource.dart'
+    as _i358;
 import 'package:smart_tracking/api/datasources/vehicle_datasource.dart'
     as _i810;
 import 'package:smart_tracking/api/provider_api_module.dart' as _i901;
@@ -23,7 +31,17 @@ import 'package:smart_tracking/base/repository/vehicle_repository.dart'
     as _i1051;
 import 'package:smart_tracking/geofences/repository/geo_fence_repository.dart'
     as _i416;
+import 'package:smart_tracking/home/repository/report_repository.dart' as _i623;
 import 'package:smart_tracking/login/repository/login_repository.dart' as _i956;
+import 'package:smart_tracking/notifications/repository/notifications_repository.dart'
+    as _i603;
+import 'package:smart_tracking/remember_password/repository/recovery_password_repository.dart'
+    as _i139;
+import 'package:smart_tracking/services/home_services.dart' as _i388;
+import 'package:smart_tracking/user/repository/session_repository.dart' as _i4;
+import 'package:smart_tracking/user/repository/user_repository.dart' as _i722;
+import 'package:smart_tracking/user_notifications/repository/user_notification_repository.dart'
+    as _i128;
 import 'package:smart_tracking/utils/app_navigator.dart' as _i405;
 import 'package:smart_tracking/utils/helper_module.dart' as _i891;
 import 'package:smart_tracking/utils/shared_preferences_v2.dart' as _i33;
@@ -54,18 +72,42 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1055.NavigationService>(
         () => helperModuleStacked.navigationService);
     gh.lazySingleton<_i31.ChopperClient>(() => chopperModule.chopperBuilder());
+    gh.lazySingleton<_i388.HomeServices>(() => _i388.HomeServices());
     gh.factory<_i805.LoginDataSource>(() =>
         providerApiModule.provideLoginDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i810.VehicleDataSource>(() =>
         providerApiModule.provideVehicleDataSource(gh<_i31.ChopperClient>()));
     gh.factory<_i1063.GeoFenceDataSource>(() =>
         providerApiModule.provideGeoFenceDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i907.UserDataSource>(() =>
+        providerApiModule.provideUserDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i1055.SessionDataSource>(() =>
+        providerApiModule.provideSessionDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i19.NotificationDataSource>(() => providerApiModule
+        .provideNotificationDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i358.UserNotificationDataSource>(() => providerApiModule
+        .provideUserNotificationDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i906.ReportDataSource>(() =>
+        providerApiModule.provideReportDataSource(gh<_i31.ChopperClient>()));
+    gh.factory<_i603.NotificationsRepository>(() =>
+        _i603.NotificationsRepository.from(gh<_i19.NotificationDataSource>()));
+    gh.factory<_i4.SessionRepository>(
+        () => _i4.SessionRepository.from(gh<_i1055.SessionDataSource>()));
     gh.factory<_i956.LoginRepository>(
         () => _i956.LoginRepository.from(gh<_i805.LoginDataSource>()));
+    gh.factory<_i623.ReportRepository>(
+        () => _i623.ReportRepository.from(gh<_i906.ReportDataSource>()));
     gh.factory<_i1051.VehicleRepository>(
         () => _i1051.VehicleRepository.from(gh<_i810.VehicleDataSource>()));
+    gh.factory<_i722.UserRepository>(
+        () => _i722.UserRepository.from(gh<_i907.UserDataSource>()));
+    gh.factory<_i139.RecoveryPasswordRepository>(() =>
+        _i139.RecoveryPasswordRepository.from(gh<_i907.UserDataSource>()));
     gh.factory<_i416.GeoFenceRepository>(
         () => _i416.GeoFenceRepository.from(gh<_i1063.GeoFenceDataSource>()));
+    gh.factory<_i128.UserNotificationRepository>(() =>
+        _i128.UserNotificationRepository.from(
+            gh<_i358.UserNotificationDataSource>()));
     return this;
   }
 }

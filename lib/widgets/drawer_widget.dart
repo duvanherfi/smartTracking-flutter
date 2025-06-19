@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:smart_tracking/routes.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 import 'package:smart_tracking/utils/extensions/widget.extension.dart';
 import 'package:smart_tracking/widgets/header_drawer_widget.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
-import 'package:smart_tracking/utils/app_component.dart';
-
-import 'package:smart_tracking/routes.dart';
 
 class DrawerWidget extends StatefulWidget {
   final Function(String) onTap;
@@ -52,7 +50,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       _builderItemDrawer(
           "Datos de usuario",
           const Icon(Icons.tune, color: Color(0xFF6C18DB), size: 50),
-          'profile'
+          'user'
       ),
     );
     drawerItem.add(
@@ -66,7 +64,7 @@ class DrawerWidgetState extends State<DrawerWidget> {
       _builderItemDrawer(
           "Configuración de alertas",
           const Icon(Icons.warning, color: Color(0xFF6C18DB), size: 50),
-          'alerts'
+          'notifications'
       ),
     );
 

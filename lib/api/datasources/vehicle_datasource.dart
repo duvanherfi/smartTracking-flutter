@@ -1,9 +1,6 @@
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
 import 'package:chopper/chopper.dart';
-import 'package:smart_tracking/api/model/vehicle.dart';
-
 import 'package:smart_tracking/api/model/area_geojson.dart';
+import 'package:smart_tracking/api/model/vehicle.dart';
 
 part 'vehicle_datasource.chopper.dart';
 

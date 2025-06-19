@@ -19,7 +19,7 @@ final class _$LoginDataSource extends LoginDataSource {
   final Type definitionType = LoginDataSource;
 
   @override
-  Future<Response<SessionResponse>> login(Session request) {
+  Future<Response<SessionResponse>> login(SessionRequest request) {
     final Uri $url = Uri.parse('/sessions/login');
     final $body = request;
     final Request $request = Request(

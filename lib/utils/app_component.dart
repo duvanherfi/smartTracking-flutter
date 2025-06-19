@@ -1,18 +1,20 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:smart_tracking/api/request_json_error_converter.dart';
-import 'package:smart_tracking/utils/app_component.config.dart';
-import 'package:smart_tracking/utils/shared_preferences_v2.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'app_navigator.dart';
 import 'package:smart_tracking/api/base_chopper_module.dart';
 import 'package:smart_tracking/api/datasources/datasources.dart';
-
+import 'package:smart_tracking/api/request_json_error_converter.dart';
+import 'package:smart_tracking/utils/app_component.config.dart';
 import 'package:smart_tracking/utils/config.dart';
-
 import 'package:smart_tracking/utils/enviroments.dart';
+import 'package:smart_tracking/utils/shared_preferences_v2.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'app_navigator.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -24,7 +26,7 @@ final galleryDialogService = locator<DialogService>();
 final appNavigator = locator<AppNavigator>();
 final config = locator<Config>();
 final snackBarService = locator<SnackbarService>();
-enum GeofenceMode { free, recommended, circle }
+enum GeofenceMode { circle, free, recommended }
 
 
 void configureLocatorApp() {
@@ -52,11 +54,7 @@ void initConverters() {
   errorConverter = RequestJsonErrorConverter();
 }
 
-Future<void> setUpRemoteConfig({
-  bool isInvitation = false,
-  bool fakeGpsEnabledInitialValue = false,
-  VoidCallback? onInvitationCallback,
-}) async {
+Future<void> setUpRemoteConfig() async {
   try {
     locator.registerLazySingleton<Config>(Config.new);
     config.initLocal();
@@ -66,8 +64,23 @@ Future<void> setUpRemoteConfig({
   } catch (_) {
     Environments.initEnvironmentUrls({});
   }
+}
 
-  if (!isInvitation) {
-    onInvitationCallback?.call();
+Future<void> generatePushToken() async {
+  String? token;
+  try {
+    final firebaseMessaging = FirebaseMessaging.instance;
+
+    if (Platform.isIOS) {
+      token = await firebaseMessaging.getAPNSToken() ?? '';
+    } else if (Platform.isAndroid) {
+      token = await firebaseMessaging.getToken();
+    }
+  } catch(e) {
+    print('Error generating push token: $e');
+    token = '';
   }
+
+
+  sharedPreferencesV2.setPushTokenFirebase(token);
 }

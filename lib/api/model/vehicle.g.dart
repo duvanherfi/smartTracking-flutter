@@ -7,7 +7,7 @@ part of 'vehicle.dart';
 // **************************************************************************
 
 Vehicle _$VehicleFromJson(Map<String, dynamic> json) => Vehicle(
-      id: json['_id'] as String?,
+      id: json['_id'] as String,
       batteryLevel: json['battery_level'] as String?,
       blocked: json['blocked'] as bool?,
       category: json['category'] as String?,
@@ -39,13 +39,14 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) => Vehicle(
           ? null
           : DateTime.parse(json['updated_at'] as String),
       userId: json['user_id'] as String?,
-      averageSpeed: json['average_speed'] as String?,
-      maxSpeed: json['max_speed'] as String?,
+      averageSpeed: (json['average_speed'] as num?)?.toDouble(),
+      maxSpeed: (json['max_speed'] as num?)?.toDouble(),
       labelDirection: json['label_direction'] as String?,
+      hours: (json['hours'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{
-      if (instance.id case final value?) '_id': value,
+      '_id': instance.id,
       if (instance.batteryLevel case final value?) 'battery_level': value,
       if (instance.blocked case final value?) 'blocked': value,
       if (instance.category case final value?) 'category': value,
@@ -76,4 +77,5 @@ Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{
       if (instance.averageSpeed case final value?) 'average_speed': value,
       if (instance.maxSpeed case final value?) 'max_speed': value,
       if (instance.labelDirection case final value?) 'label_direction': value,
+      if (instance.hours case final value?) 'hours': value,
     };

@@ -1,6 +1,7 @@
 // coverage:ignore-file
 
 import 'dart:async';
+
 import 'package:chopper/chopper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:smart_tracking/utils/app_component.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:smart_tracking/api/api_result.dart';
 import 'package:smart_tracking/api/datasources/vehicle_datasource.dart';

@@ -1,37 +1,30 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-
+import 'package:smart_tracking/remember_password/view_model/recovery_password_view_model.dart';
 import 'package:smart_tracking/routes.dart';
 import 'package:smart_tracking/utils/app_component.dart';
+import 'package:stacked/stacked.dart';
 
-class RemeberPasswordScreen extends StatefulWidget {
-  @override
-  _RemeberPasswordScreenState createState() => _RemeberPasswordScreenState();
-}
-
-class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
+class RemeberPasswordScreen extends StackedView<RecoveryPasswordViewModel> {
 
   @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormBuilderState>();
-    final _numberKey = GlobalKey<FormBuilderFieldState>();
-
+  Widget builder(BuildContext context, RecoveryPasswordViewModel viewModel, Widget? child) {
     return Scaffold(
+      key: viewModel.scaffoldKey,
       appBar: AppBar(
-        title: const Text('Recordar contraseña', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF6c18db),
-        leading: IconButton(
-          icon: const Icon(
+          title: const Text('Recordar contraseña', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xFF6c18db),
+          leading: IconButton(
+            icon: const Icon(
               Icons.arrow_circle_left,
               color: Colors.white,
               size: 45,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -74,27 +67,26 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Center(
                   child: FormBuilder(
-                    key: _formKey,
+                    key: viewModel.formKey,
                     child: Column(
                       children: [
                         FormBuilderTextField(
-                          key: _numberKey,
                           keyboardType: TextInputType.number,
                           name: 'phone',
                           style: const TextStyle(
                               color: Colors.black,
                               height: 1
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Número',
                             floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: const OutlineInputBorder(
+                            border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(30)),
                               borderSide: BorderSide.none,
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.numbers,
                               color: Colors.grey,
                             ),
@@ -117,50 +109,7 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
                           ),
                           height: 50,
                           minWidth: double.infinity,
-                          onPressed: () {
-                            // Validate and save the form values
-                           // _formKey.currentState?.saveAndValidate();
-                            // debugPrint(_formKey.currentState?.value.toString());
-
-                            // On another side, can access all field values without saving form with instantValues
-                            if (_formKey.currentState!.validate()) {
-                              debugPrint(_formKey.currentState?.instantValue.toString());
-                              appNavigator.clearStackAndShow(Routes.login);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      textAlign: TextAlign.center,
-                                      'Contraseña recordada',
-                                      style: TextStyle(
-                                        color: Color(0xFF6C18DB),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30,
-                                      ),
-                                    ),
-                                    content: const Text(
-                                      textAlign: TextAlign.justify,
-                                      'Tu contraseña ha sido enviada a tu número de teléfono vía SMS y a tu correo electrónico.',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('Aceptar'),
-                                        onPressed: () {
-                                          // Lógica para aceptar
-                                          Navigator.of(context).pop(); // Cierra el diálogo
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          },
+                          onPressed: viewModel.recoveryPassword,
                           child: const Text('Recordar contraseña'),
                         ),
                       ],
@@ -174,4 +123,8 @@ class _RemeberPasswordScreenState extends State<RemeberPasswordScreen> {
       ),
     );
   }
+
+  @override
+  RecoveryPasswordViewModel viewModelBuilder(BuildContext context) =>
+      RecoveryPasswordViewModel();
 }
