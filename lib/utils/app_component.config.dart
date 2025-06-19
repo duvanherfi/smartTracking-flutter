@@ -35,6 +35,8 @@ import 'package:smart_tracking/home/repository/report_repository.dart' as _i623;
 import 'package:smart_tracking/login/repository/login_repository.dart' as _i956;
 import 'package:smart_tracking/notifications/repository/notifications_repository.dart'
     as _i603;
+import 'package:smart_tracking/remember_password/repository/recovery_password_repository.dart'
+    as _i139;
 import 'package:smart_tracking/services/home_services.dart' as _i388;
 import 'package:smart_tracking/user/repository/session_repository.dart' as _i4;
 import 'package:smart_tracking/user/repository/user_repository.dart' as _i722;
@@ -99,6 +101,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1051.VehicleRepository.from(gh<_i810.VehicleDataSource>()));
     gh.factory<_i722.UserRepository>(
         () => _i722.UserRepository.from(gh<_i907.UserDataSource>()));
+    gh.factory<_i139.RecoveryPasswordRepository>(() =>
+        _i139.RecoveryPasswordRepository.from(gh<_i907.UserDataSource>()));
     gh.factory<_i416.GeoFenceRepository>(
         () => _i416.GeoFenceRepository.from(gh<_i1063.GeoFenceDataSource>()));
     gh.factory<_i128.UserNotificationRepository>(() =>

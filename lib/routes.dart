@@ -26,6 +26,7 @@ class Routes {
     addGeoFence: (context) => const AddGeofenceScreen(),
     rememberPassword: (context) => RemeberPasswordScreen(),
     share: (context) => const ShareScreen(),
+    notificationScreen: (context) => const NotificationScreen(),
     userNotificationScreen: (context) => const UserNotificationScreen(),
   };
 }
