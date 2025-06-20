@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:smart_tracking/services/home_services.dart';
+import 'package:smart_tracking/utils/app_component.dart';
 
 class HeaderDrawerWidget extends StatefulWidget {
   final bool isRooted;
   final bool isRealDevice;
 
-  const HeaderDrawerWidget(
+  HeaderDrawerWidget(
     this.isRooted,
     this.isRealDevice, {
     super.key,
@@ -15,6 +17,7 @@ class HeaderDrawerWidget extends StatefulWidget {
 }
 
 class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
+  final _homeServices = locator<HomeServices>();
 
   @override
   void initState() {
@@ -40,7 +43,7 @@ class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
   Widget name() {
 
     return Text(
-      "Usuario",
+      _homeServices.user.value?.name ?? "Usuario",
       maxLines: 2,
       style: TextStyle(
         fontSize: 20,
@@ -75,7 +78,6 @@ class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         name(),
-                        name()
                       ],
                     ),
                   ),
