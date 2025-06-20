@@ -19,7 +19,7 @@ class VehicleMapWidget extends ViewModelWidget<BaseScreenViewModel> {
         Stack(
           children: [
             SizedBox(
-              height: size.height * 0.75,
+              height: size.height * 0.70,
               child: FlutterMap(
                 key: viewModel.mapKey,
                 options: MapOptions(

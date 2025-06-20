@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_tracking/api/model/vehicle.dart';
@@ -145,55 +146,51 @@ class BaseScreen extends StackedView<BaseScreenViewModel> {
                             width: size.width,
                             height: size.height,
                             padding: const EdgeInsets.only(
-                                top: 100,
+                                top: 150,
                             ),
                             child: viewModel.childBase,
                           ),
                         ),
                         Positioned(
-                            top: 30,
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 2)
-                                  ),
-                                  viewModel.getFirstButton(),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(horizontal: 50)
-                                  ),
-
-                                  //crear lista desplegable con opción de 'vehiculo 1'
-                                  DropdownButton(
-                                    padding: EdgeInsets.all(0),
-                                    style: const TextStyle(
-                                      color: Color(0xFF6c18db),
-                                      backgroundColor: Colors.white,
-                                      fontSize: 20,
+                            top: 0,
+                            child: SizedBox(
+                              width: size.width,
+                              height: size.height * 0.2,
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(child: viewModel.getFirstButton()),
+                                    Expanded(
+                                      flex: 4,
+                                      child: DropdownButton(
+                                        style: const TextStyle(
+                                          color: Color(0xFF6c18db),
+                                          backgroundColor: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                        dropdownColor: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        value: viewModel.vehicle,
+                                        items: viewModel.vehicles
+                                            .map((Vehicle vehicle) {
+                                          return DropdownMenuItem<Vehicle>(
+                                            value: vehicle,
+                                            child: Text(vehicle.toString()),
+                                          );
+                                        }).toList(),
+                                        onChanged: viewModel.onVehicleTap,
+                                        icon: const Icon(Icons.keyboard_arrow_down,
+                                            color: Color(0xFF6c18db), size: 45),
+                                      ),
                                     ),
-                                    dropdownColor: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    value: viewModel.vehicleId,
-                                    items: viewModel.vehicles
-                                        .map((Vehicle vehicle) {
-                                      return DropdownMenuItem<String>(
-                                        value: vehicle.id,
-                                        child: Text(vehicle.plates?.toString() ?? ""),
-                                      );
-                                    }).toList(),
-                                    onChanged: viewModel.onVehicleTap,
-                                    icon: const Icon(Icons.keyboard_arrow_down,
-                                        color: Color(0xFF6c18db), size: 45),
-                                    menuMaxHeight: 200,
-                                  ),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(horizontal: 40)
-                                  ),
-                                  viewModel.selectedButton,
-                                ])),
+                                    Expanded(
+                                        child: viewModel.selectedButton
+                                    ),
+                                  ]
+                              ),
+                            )
+                        ),
                       ],
                     ),
                   ),
