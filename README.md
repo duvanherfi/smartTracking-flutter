@@ -39,8 +39,26 @@ flutter run
 The repo pins its Flutter version with [fvm](https://fvm.app), so prefix the
 commands with `fvm` if you use it.
 
-The API base URL lives in `lib/api`; point it at a running instance of the
-backend.
+### It will not connect to anything as it stands
+
+`lib/utils/enviroments.dart` still points at `https://api.smartracking.xyz`,
+which **no longer resolves** — the domain is gone, checked on 2026-08-31. To
+get past the login screen you have to run the
+[backend](https://github.com/duvanherfi/smart-tracking-back) yourself and point
+the app at it, either by editing that file or by writing the URL into the
+app's own preferences (`SharedPreferencesV2.setApiBaseUrl`, which the file
+already reads and which overrides the compiled default at runtime). There is a
+commented-out LAN address in there showing the shape it expects, path included:
+`http://host:3001/api/v1/`.
+
+And the backend, in turn, needs an account with a commercial GPS provider that
+is not mine to hand out — its README says which variables and why.
+
+Push notifications need **your own** Firebase project: the committed
+`google-services.json` and `firebase_options.dart` name a project you have no
+access to. Replace all three files with the ones `flutterfire configure`
+generates for yours, or leave them and skip messaging — nothing else in the app
+depends on it.
 
 ## A note on what is committed
 
